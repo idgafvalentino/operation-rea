@@ -1,56 +1,79 @@
 /**
- * General utility functions
+ * General utility functions for the REA system
  */
 
 /**
- * Creates a deep copy of an object, handling nested objects, arrays, dates and other common types
- * @param {*} obj - The object to deep copy
- * @returns {*} A deep copy of the input
+ * Creates a deep copy of an object or array
+ * @param {any} obj - Object to copy
+ * @returns {any} Deep copy of the object
  */
-export function deepCopy(obj) {
-    // Handle primitive types and null/undefined
-    if (obj === null || obj === undefined || typeof obj !== 'object') {
+function deepCopy(obj) {
+    if (obj === null || typeof obj !== 'object') {
         return obj;
     }
-
-    // Handle Date objects
-    if (obj instanceof Date) {
-        return new Date(obj.getTime());
-    }
-
-    // Handle Array objects
+    
     if (Array.isArray(obj)) {
         return obj.map(item => deepCopy(item));
     }
-
-    // Handle Object objects
+    
     const copy = {};
-    // Use hasOwnProperty to avoid copying prototype properties
-    Object.keys(obj).forEach(key => {
+    for (const key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
             copy[key] = deepCopy(obj[key]);
         }
-    });
+    }
     
     return copy;
 }
 
 /**
- * Legacy alias for JSON-based deep clone (less robust but potentially faster for simple objects)
- * @param {*} obj - The object to clone 
- * @returns {*} A deep copy of the input
+ * Extracts keywords from a text string
+ * @param {string} text - Text to extract keywords from
+ * @returns {Array<string>} Array of keywords
  */
-export function deepClone(obj) {
-    return JSON.parse(JSON.stringify(obj));
+function extractKeywords(text) {
+    if (!text || typeof text !== 'string') {
+        return [];
+    }
+    
+    // Convert to lowercase
+    const lowercaseText = text.toLowerCase();
+    
+    // Remove common punctuation
+    const cleanedText = lowercaseText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, ' ');
+    
+    // Split into words
+    const words = cleanedText.split(/\s+/);
+    
+    // Filter out common stopwords
+    const stopwords = new Set([
+        'a', 'an', 'the', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 
+        'be', 'been', 'being', 'to', 'of', 'for', 'in', 'on', 'at', 'by', 
+        'with', 'about', 'against', 'between', 'into', 'through', 'during', 
+        'before', 'after', 'above', 'below', 'from', 'up', 'down', 'out', 
+        'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 
+        'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 
+        'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 
+        'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 
+        'will', 'just', 'don', 'should', 'now'
+    ]);
+    
+    const keywords = words.filter(word => {
+        // Filter out stopwords and words with less than 3 characters
+        return word.length > 2 && !stopwords.has(word);
+    });
+    
+    return keywords;
 }
 
 /**
- * Calculates the similarity between two strings
+ * Calculate similarity between two strings using multiple metrics
+ * Enhanced with synonym recognition for ethical terminology
  * @param {string} str1 - First string
  * @param {string} str2 - Second string
  * @returns {number} Similarity score between 0 and 1
  */
-export function calculateStringSimilarity(str1, str2) {
+function calculateSimilarity(str1, str2) {
     if (!str1 || !str2) {
         return 0;
     }
@@ -59,252 +82,209 @@ export function calculateStringSimilarity(str1, str2) {
         return 1;
     }
     
-    // Convert to lowercase for case-insensitive comparison
+    // Convert to lowercase
     const s1 = str1.toLowerCase();
     const s2 = str2.toLowerCase();
     
-    // Calculate Levenshtein distance
-    const matrix = [];
+    // Calculate containment score
+    const containment = calculateContainment(s1, s2);
     
-    // Initialize matrix
-    for (let i = 0; i <= s1.length; i++) {
-        matrix[i] = [i];
+    // Calculate word overlap
+    const wordOverlap = calculateWordOverlap(s1, s2);
+    
+    // Calculate edit distance similarity
+    const editSimilarity = calculateEditSimilarity(s1, s2);
+    
+    // Calculate semantic similarity with ethical term recognition
+    const semanticSimilarity = calculateSemanticSimilarity(s1, s2);
+    
+    // Weighted average of all metrics
+    // Giving more weight to semantic and word overlap for ethical concepts
+    return (
+        (containment * 0.2) + 
+        (wordOverlap * 0.3) + 
+        (editSimilarity * 0.2) + 
+        (semanticSimilarity * 0.3)
+    );
+}
+
+/**
+ * Calculate containment score between two strings 
+ * @param {string} s1 - First string
+ * @param {string} s2 - Second string
+ * @returns {number} Containment score between 0 and 1
+ */
+function calculateContainment(s1, s2) {
+    if (s1.includes(s2)) {
+        return 1;
     }
     
-    for (let j = 0; j <= s2.length; j++) {
-        matrix[0][j] = j;
+    if (s2.includes(s1)) {
+        return 1;
+    }
+    
+    return 0;
+}
+
+/**
+ * Calculate word overlap between two strings
+ * @param {string} s1 - First string
+ * @param {string} s2 - Second string
+ * @returns {number} Word overlap score between 0 and 1
+ */
+function calculateWordOverlap(s1, s2) {
+    const words1 = extractKeywords(s1);
+    const words2 = extractKeywords(s2);
+    
+    if (words1.length === 0 || words2.length === 0) {
+        return 0;
+    }
+    
+    // Count common words
+    const words1Set = new Set(words1);
+    const intersection = words2.filter(word => words1Set.has(word));
+    
+    // Calculate Jaccard similarity
+    const union = new Set([...words1, ...words2]);
+    return intersection.length / union.size;
+}
+
+/**
+ * Calculate edit distance similarity using Levenshtein distance
+ * @param {string} s1 - First string
+ * @param {string} s2 - Second string
+ * @returns {number} Edit similarity score between 0 and 1
+ */
+function calculateEditSimilarity(s1, s2) {
+    const distance = levenshteinDistance(s1, s2);
+    const maxLength = Math.max(s1.length, s2.length);
+    
+    if (maxLength === 0) {
+        return 1;
+    }
+    
+    return 1 - (distance / maxLength);
+}
+
+/**
+ * Calculate Levenshtein distance between two strings
+ * @param {string} s1 - First string
+ * @param {string} s2 - Second string
+ * @returns {number} Levenshtein distance
+ */
+function levenshteinDistance(s1, s2) {
+    const m = s1.length;
+    const n = s2.length;
+    
+    // Create matrix
+    const dp = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
+    
+    // Initialize first row and column
+    for (let i = 0; i <= m; i++) {
+        dp[i][0] = i;
+    }
+    
+    for (let j = 0; j <= n; j++) {
+        dp[0][j] = j;
     }
     
     // Fill matrix
-    for (let i = 1; i <= s1.length; i++) {
-        for (let j = 1; j <= s2.length; j++) {
-            const cost = s1.charAt(i - 1) === s2.charAt(j - 1) ? 0 : 1;
-            matrix[i][j] = Math.min(
-                matrix[i - 1][j] + 1,      // deletion
-                matrix[i][j - 1] + 1,      // insertion
-                matrix[i - 1][j - 1] + cost // substitution
-            );
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (s1[i - 1] === s2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = 1 + Math.min(
+                    dp[i - 1][j],      // deletion
+                    dp[i][j - 1],      // insertion
+                    dp[i - 1][j - 1]   // substitution
+                );
+            }
         }
     }
     
-    // Calculate similarity score
-    const maxLength = Math.max(s1.length, s2.length);
-    if (maxLength === 0) {
-        return 1; // Both strings are empty
-    }
-    
-    const distance = matrix[s1.length][s2.length];
-    return 1 - distance / maxLength;
+    return dp[m][n];
 }
 
 /**
- * Highlights changes between two texts
- * @param {string} originalText - Original text
- * @param {string} newText - New text
- * @returns {string} HTML with highlighted changes
+ * Calculate semantic similarity with ethical term recognition
+ * @param {string} s1 - First string
+ * @param {string} s2 - Second string
+ * @returns {number} Semantic similarity score between 0 and 1
  */
-export function highlightChanges(originalText, newText) {
-    if (!originalText || !newText) {
-        return newText || originalText || '';
+function calculateSemanticSimilarity(s1, s2) {
+    // Extract keywords
+    const keywords1 = extractKeywords(s1);
+    const keywords2 = extractKeywords(s2);
+    
+    if (keywords1.length === 0 || keywords2.length === 0) {
+        return 0;
     }
     
-    if (originalText === newText) {
-        return newText;
+    // Count synonym matches using ethical terms dictionary
+    let matchCount = 0;
+    
+    for (const word1 of keywords1) {
+        for (const word2 of keywords2) {
+            if (word1 === word2) {
+                // Direct match
+                matchCount += 1;
+            } else if (areEthicalSynonyms(word1, word2)) {
+                // Synonym match
+                matchCount += 0.8;
+            }
+        }
     }
     
-    // Simple word-by-word diff
-    const originalWords = originalText.split(/\s+/);
-    const newWords = newText.split(/\s+/);
-    
-    // Find common prefix
-    let prefixLength = 0;
-    while (prefixLength < originalWords.length && 
-           prefixLength < newWords.length && 
-           originalWords[prefixLength] === newWords[prefixLength]) {
-        prefixLength++;
-    }
-    
-    // Find common suffix
-    let suffixLength = 0;
-    while (suffixLength < originalWords.length - prefixLength && 
-           suffixLength < newWords.length - prefixLength && 
-           originalWords[originalWords.length - 1 - suffixLength] === newWords[newWords.length - 1 - suffixLength]) {
-        suffixLength++;
-    }
-    
-    // Extract changed parts
-    const originalChanged = originalWords.slice(prefixLength, originalWords.length - suffixLength);
-    const newChanged = newWords.slice(prefixLength, newWords.length - suffixLength);
-    
-    // Construct result with highlighting
-    const prefix = originalWords.slice(0, prefixLength).join(' ');
-    const suffix = originalWords.slice(originalWords.length - suffixLength).join(' ');
-    
-    let result = '';
-    
-    if (prefix) {
-        result += prefix + ' ';
-    }
-    
-    if (originalChanged.length > 0) {
-        result += '[-' + originalChanged.join(' ') + '-] ';
-    }
-    
-    if (newChanged.length > 0) {
-        result += '[+' + newChanged.join(' ') + '+] ';
-    }
-    
-    if (suffix) {
-        result += suffix;
-    }
-    
-    return result.trim();
+    // Normalize by the maximum possible matches
+    const maxPossibleMatches = Math.max(keywords1.length, keywords2.length);
+    return Math.min(1, matchCount / maxPossibleMatches);
 }
 
 /**
- * Capitalizes the first letter of a string
- * @param {string} str - String to capitalize
- * @returns {string} Capitalized string
+ * Check if two terms are ethical synonyms
+ * @param {string} term1 - First ethical term
+ * @param {string} term2 - Second ethical term
+ * @returns {boolean} True if terms are synonyms
  */
-export function capitalizeFirstLetter(str) {
-    if (!str || typeof str !== 'string' || str.length === 0) {
-        return str;
-    }
+function areEthicalSynonyms(term1, term2) {
+    // Dictionary of ethical term synonyms
+    const ethicalSynonyms = {
+        'good': ['beneficial', 'positive', 'virtuous', 'worthy', 'righteous'],
+        'bad': ['harmful', 'negative', 'wrong', 'evil', 'immoral'],
+        'duty': ['obligation', 'responsibility', 'commitment', 'requirement'],
+        'right': ['permissible', 'allowed', 'correct', 'proper', 'justified'],
+        'wrong': ['impermissible', 'prohibited', 'forbidden', 'incorrect', 'improper'],
+        'harm': ['damage', 'injury', 'hurt', 'suffering', 'pain'],
+        'benefit': ['advantage', 'good', 'welfare', 'wellbeing', 'utility'],
+        'autonomy': ['freedom', 'independence', 'self-determination', 'liberty'],
+        'justice': ['fairness', 'equity', 'impartiality', 'rightness'],
+        'virtue': ['excellence', 'goodness', 'merit', 'morality'],
+        'care': ['concern', 'compassion', 'empathy', 'kindness'],
+        'utility': ['usefulness', 'benefit', 'advantage', 'good'],
+        // Add more ethical term synonyms as needed
+    };
     
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-/**
- * Extracts the first sentence from a text
- * @param {string} text - Text to extract from
- * @returns {string} First sentence
- */
-export function extractFirstSentence(text) {
-    if (!text || typeof text !== 'string') {
-        return '';
-    }
-    
-    const match = text.match(/^.*?[.!?](?:\s|$)/);
-    return match ? match[0].trim() : text;
-}
-
-/**
- * Checks if a value is empty (null, undefined, empty string, empty array, or empty object)
- * @param {*} value - Value to check
- * @returns {boolean} True if empty, false otherwise
- */
-export function isEmpty(value) {
-    if (value === null || value === undefined) {
+    // Check if either term is a key in the dictionary
+    if (ethicalSynonyms[term1] && ethicalSynonyms[term1].includes(term2)) {
         return true;
     }
     
-    if (typeof value === 'string' && value.trim() === '') {
-        return true;
-    }
-    
-    if (Array.isArray(value) && value.length === 0) {
-        return true;
-    }
-    
-    if (typeof value === 'object' && Object.keys(value).length === 0) {
+    if (ethicalSynonyms[term2] && ethicalSynonyms[term2].includes(term1)) {
         return true;
     }
     
     return false;
 }
 
-/**
- * Safely parses JSON with error handling
- * @param {string} jsonString - JSON string to parse
- * @param {*} defaultValue - Default value to return on error
- * @returns {*} Parsed JSON or default value
- */
-export function safeJsonParse(jsonString, defaultValue = {}) {
-    try {
-        return JSON.parse(jsonString);
-    } catch (error) {
-        console.error('Error parsing JSON:', error);
-        return defaultValue;
-    }
-}
-
-/**
- * Truncates a string to a maximum length
- * @param {string} str - String to truncate
- * @param {number} maxLength - Maximum length
- * @param {string} suffix - Suffix to add if truncated
- * @returns {string} Truncated string
- */
-export function truncateString(str, maxLength = 100, suffix = '...') {
-    if (!str || str.length <= maxLength) {
-        return str;
-    }
-    
-    return str.substring(0, maxLength - suffix.length) + suffix;
-}
-
-/**
- * Extracts relevant keywords from a dilemma
- * @param {Object} dilemma - The dilemma to extract keywords from
- * @returns {Array<string>} Array of keywords
- */
-export function extractKeywords(dilemma) {
-    if (!dilemma) {
-        return [];
-    }
-
-    const keywords = new Set();
-
-    // Extract from title
-    if (dilemma.title) {
-        dilemma.title.toLowerCase().split(/\W+/).forEach(word => {
-            if (word.length > 2) keywords.add(word);
-        });
-    }
-
-    // Extract from description
-    if (dilemma.description) {
-        dilemma.description.toLowerCase().split(/\W+/).forEach(word => {
-            if (word.length > 2) keywords.add(word);
-        });
-    }
-
-    // Extract from context
-    if (dilemma.context) {
-        dilemma.context.toLowerCase().split(/\W+/).forEach(word => {
-            if (word.length > 2) keywords.add(word);
-        });
-    }
-
-    // Extract from stakeholders
-    if (dilemma.stakeholders && Array.isArray(dilemma.stakeholders)) {
-        dilemma.stakeholders.forEach(stakeholder => {
-            if (typeof stakeholder === 'string') {
-                stakeholder.toLowerCase().split(/\W+/).forEach(word => {
-                    if (word.length > 2) keywords.add(word);
-                });
-            } else if (stakeholder.name) {
-                stakeholder.name.toLowerCase().split(/\W+/).forEach(word => {
-                    if (word.length > 2) keywords.add(word);
-                });
-            }
-        });
-    }
-
-    // Extract from actions
-    if (dilemma.possible_actions && Array.isArray(dilemma.possible_actions)) {
-        dilemma.possible_actions.forEach(action => {
-            if (typeof action === 'string') {
-                action.toLowerCase().split(/\W+/).forEach(word => {
-                    if (word.length > 2) keywords.add(word);
-                });
-            } else if (action.description) {
-                action.description.toLowerCase().split(/\W+/).forEach(word => {
-                    if (word.length > 2) keywords.add(word);
-                });
-            }
-        });
-    }
-
-    return Array.from(keywords);
-} 
+// Export functions
+export {
+    deepCopy,
+    extractKeywords,
+    calculateSimilarity,
+    calculateContainment,
+    calculateWordOverlap,
+    calculateEditSimilarity,
+    calculateSemanticSimilarity,
+    levenshteinDistance
+}; 

@@ -117,6 +117,32 @@ export const resolutionStrategies = {
     `.trim()
   },
   
+  stakeholder_cvar: {
+    name: 'stakeholder_cvar',
+    description: 'Prioritize interests of the most affected stakeholders using Conditional Value at Risk analysis',
+    applicableTypes: ['stakeholder_conflict'],
+    complexity: 'high',
+    explanation: `
+      This strategy uses Conditional Value at Risk (CVaR) analysis to identify and prioritize the 
+      stakeholders who would be most severely impacted by negative outcomes. Rather than focusing on 
+      average impacts, it specifically considers worst-case scenarios for vulnerable stakeholders and 
+      gives their concerns additional weight in the decision-making process.
+    `.trim()
+  },
+  
+  pluralistic: {
+    name: 'pluralistic',
+    description: 'Acknowledges the validity of multiple ethical perspectives without forcing a single resolution',
+    applicableTypes: ['framework_conflict', 'multi_framework_conflict'],
+    complexity: 'medium',
+    explanation: `
+      Instead of forcing a single "right answer," this strategy acknowledges that different ethical 
+      perspectives each capture valuable aspects of the moral landscape. It presents multiple valid 
+      perspectives and their reasoning, allowing for a more nuanced understanding that respects 
+      ethical pluralism.
+    `.trim()
+  },
+  
   casuistry: {
     name: 'casuistry',
     description: 'Use relevant precedent cases to resolve the current dilemma',
@@ -149,11 +175,10 @@ export const resolutionStrategies = {
     applicableTypes: ['framework_conflict', 'multi_framework_conflict'],
     complexity: 'high',
     explanation: `
-      This strategy embraces ethical pluralism, acknowledging that different ethical frameworks may 
-      each capture important but partial aspects of moral truth. Rather than forcing a single 
-      resolution, it develops an integrated approach that preserves the distinctive insights of 
-      each ethical tradition while showing how they can work together to provide comprehensive 
-      ethical guidance.
+      This strategy recognizes that different ethical frameworks may each capture important aspects of
+      morality. Rather than seeking a single right answer, it acknowledges moral pluralism and aims to
+      integrate insights from multiple perspectives into a more complete understanding of the ethical
+      landscape of the dilemma.
     `.trim()
   }
 };
@@ -1893,6 +1918,120 @@ function calculateFrameworkWeights(frameworks, conflict) {
   }
   
   return normalizedWeights;
+}
+
+/**
+ * Apply stakeholder CVaR strategy for resolving conflicts
+ * @param {Object} strategy - The strategy to apply
+ * @param {Object} conflict - The ethical conflict to resolve
+ * @param {Object} dilemma - The ethical dilemma
+ * @returns {Object} Resolution using the stakeholder CVaR approach
+ */
+function applyStakeholderCVaRStrategy(strategy, conflict, dilemma) {
+  // Extract stakeholders from the dilemma
+  const stakeholders = dilemma.stakeholders || [];
+  if (!stakeholders.length) {
+    return {
+      action: conflict.proposed_actions[0] || "no_action",
+      justification: "Unable to apply CVaR analysis due to missing stakeholder information.",
+      confidence: 0.4
+    };
+  }
+  
+  // Calculate potential impact on each stakeholder for each action
+  const stakeholderImpacts = {};
+  const actionsToAnalyze = conflict.proposed_actions || 
+                          (conflict.action_groups ? Object.keys(conflict.action_groups) : []);
+  
+  // For each action, assess impact on stakeholders
+  for (const action of actionsToAnalyze) {
+    stakeholderImpacts[action] = {};
+    
+    for (const stakeholder of stakeholders) {
+      const impact = estimateImpact(stakeholder, action, dilemma);
+      stakeholderImpacts[action][stakeholder.id] = impact;
+    }
+  }
+  
+  // Calculate CVaR (Conditional Value at Risk) for each action
+  // This focuses on the expected loss in worst-case scenarios
+  const cvarByAction = {};
+  for (const action of actionsToAnalyze) {
+    // Extract impacts for this action and sort from worst to best
+    const impacts = Object.values(stakeholderImpacts[action])
+      .sort((a, b) => a.value - b.value);
+    
+    // Calculate CVaR - average of worst 20% impacts
+    const cvarThreshold = Math.ceil(impacts.length * 0.2);
+    const worstImpacts = impacts.slice(0, Math.max(1, cvarThreshold));
+    const cvarValue = worstImpacts.reduce((sum, impact) => sum + impact.value, 0) / worstImpacts.length;
+    
+    cvarByAction[action] = {
+      value: cvarValue,
+      worstAffectedStakeholders: worstImpacts.map(impact => impact.stakeholderId)
+    };
+  }
+  
+  // Identify the action with the least negative CVaR
+  let bestAction = actionsToAnalyze[0];
+  let bestCVaR = cvarByAction[bestAction].value;
+  
+  for (const action of actionsToAnalyze) {
+    if (cvarByAction[action].value > bestCVaR) {
+      bestAction = action;
+      bestCVaR = cvarByAction[action].value;
+    }
+  }
+  
+  // Generate justification
+  const justification = `
+    Using Conditional Value at Risk analysis, the action "${bestAction}" minimizes the negative impact 
+    on the most vulnerable stakeholders. While other actions may have higher average benefits, this approach
+    prioritizes protecting those who would be most severely affected by a negative outcome.
+    
+    The stakeholders most protected by this decision include: ${cvarByAction[bestAction].worstAffectedStakeholders.join(', ')}.
+  `.trim();
+  
+  return {
+    action: bestAction,
+    justification: justification,
+    confidence: 0.8,
+    cvarAnalysis: cvarByAction
+  };
+}
+
+/**
+ * Helper function to estimate impact of an action on a stakeholder
+ * @param {Object} stakeholder - Stakeholder object
+ * @param {string} action - The action to evaluate
+ * @param {Object} dilemma - The ethical dilemma
+ * @returns {Object} Impact assessment
+ */
+function estimateImpact(stakeholder, action, dilemma) {
+  // Default impact
+  let impact = {
+    stakeholderId: stakeholder.id,
+    value: 0,
+    description: `Neutral impact on ${stakeholder.id}`
+  };
+  
+  // Try to extract impact from dilemma if available
+  if (dilemma.impacts && dilemma.impacts[action] && dilemma.impacts[action][stakeholder.id]) {
+    const specifiedImpact = dilemma.impacts[action][stakeholder.id];
+    impact.value = typeof specifiedImpact.value === 'number' ? specifiedImpact.value : 0;
+    impact.description = specifiedImpact.description || impact.description;
+    return impact;
+  }
+  
+  // If no direct impact is specified, estimate based on stakeholder vulnerability
+  const vulnerability = stakeholder.vulnerability || 0.5;
+  const directness = stakeholder.directness || 0.5;
+  
+  // Invert vulnerability scale so higher vulnerability means worse potential impact
+  impact.value = 0.5 - (vulnerability * directness);
+  impact.description = `Estimated impact on ${stakeholder.id} based on vulnerability (${vulnerability}) and directness (${directness})`;
+  
+  return impact;
 }
 
 export default {

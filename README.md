@@ -97,6 +97,32 @@ node process-dilemma-direct.js dilemmas/medical-triage.json --no-color
 5. **Conflict Resolution**: Apply resolution strategies to resolve conflicts
 6. **Recommendation**: Generate final recommendation with confidence level
 
+## Recent Improvements
+
+The codebase has recently been enhanced with several key improvements:
+
+### Enhanced Conflict Resolution Strategies
+
+- **Stakeholder CVaR Strategy**: Prioritizes interests of the most affected stakeholders using Conditional Value at Risk (CVaR) analysis
+- **Pluralistic Strategy**: Acknowledges the validity of multiple ethical perspectives without forcing a single resolution
+- **Balance Strategy**: Weighs competing values in context and proposes contextually appropriate resolutions
+
+### Improved Similarity Metrics
+
+- Enhanced semantic matching with synonym recognition for ethical terminology
+- Multi-dimensional similarity calculation combining:
+  - Containment analysis
+  - Word overlap measurement
+  - Edit distance calculation (Levenshtein)
+  - Semantic similarity with ethical term mapping
+
+### Enhanced Causal Detection
+
+- Improved pattern recognition for identifying causal relationships in text
+- More robust error handling for parsing edge cases
+- Support for multiple causal relationship types (conditional, explanation, attribution, etc.)
+- Confidence scoring for extracted causal statements
+
 ## Adding New Dilemmas
 
 Create a new JSON file in the `dilemmas/` directory following the structure of existing dilemmas. Ensure it includes:

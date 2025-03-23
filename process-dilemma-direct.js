@@ -33,6 +33,11 @@ import {
   setColorOutput
 } from './src/utils/logging.js';
 
+// Only import these when testing causal detection
+import { detectCausalLanguage, extractCausalStatements } from './src/analysis/causalDetection.js';
+// Import similarity metrics for testing
+import { calculateSimilarity, calculateContainment, calculateWordOverlap, calculateEditSimilarity, calculateSemanticSimilarity } from './src/utils/general.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -44,11 +49,16 @@ if (!dilemmaArg) {
   process.exit(1);
 }
 
+// Resolve dilemma path
+const dilemmaPath = path.resolve(dilemmaArg);
+
 // Parse command-line options
 const options = {
   format: 'text',
   color: true,
-  width: DISPLAY_FORMAT_CONFIG.defaultConsoleWidth
+  width: DISPLAY_FORMAT_CONFIG.defaultConsoleWidth,
+  testCausal: false,
+  testSimilarity: false
 };
 
 process.argv.slice(3).forEach(arg => {
@@ -58,6 +68,10 @@ process.argv.slice(3).forEach(arg => {
     options.color = false;
   } else if (arg.startsWith('--width=')) {
     options.width = parseInt(arg.split('=')[1], 10);
+  } else if (arg === '--test-causal') {
+    options.testCausal = true;
+  } else if (arg === '--test-similarity') {
+    options.testSimilarity = true;
   }
 });
 
@@ -79,8 +93,19 @@ function printFormatted(title, content, indent = 0) {
   }
 }
 
+// Test causal detection if specified as a command-line option
+if (options.testCausal) {
+  testCausalDetection(dilemmaPath);
+  process.exit(0);
+}
+
+// Test similarity metrics if specified as a command-line option
+if (options.testSimilarity) {
+  testSimilarityMetrics(dilemmaPath);
+  process.exit(0);
+}
+
 // Load the dilemma
-const dilemmaPath = path.resolve(dilemmaArg);
 console.log(formatConsoleOutput(`Loading dilemma from: ${dilemmaPath}`));
 
 try {
@@ -651,4 +676,272 @@ try {
     console.error(formatConsoleOutput(error.stack));
   }
   process.exit(1);
+}
+
+// Add this function at the end of the file
+function testCausalDetection(dilemmaPath) {
+  printFormatted("CAUSAL DETECTION TEST", "Testing enhanced causal detection functionality");
+
+  // Sample text with various causal relationships
+  const testText = `
+If nurses are given proper equipment, then patient outcomes will improve.
+The overcrowding causes increased stress on healthcare workers.
+Due to the shortage of ventilators, patients with respiratory issues are at higher risk.
+Providing additional training leads to better care for vulnerable patients.
+As a result of the triage protocol, resources are allocated more efficiently.
+The consequence of ignoring ethical guidelines is diminished trust.
+The doctor's decision contributes to patient well-being.
+Stress from long shifts influences medical decision-making quality.
+  `;
+
+  // Test causal language detection
+  console.log(formatConsoleOutput("\nTesting detectCausalLanguage:"));
+  const detection = detectCausalLanguage(testText);
+  console.log(formatConsoleOutput(`Has causal language: ${detection.hasCausalLanguage}`));
+  console.log(formatConsoleOutput(`Causal terms found: ${detection.causalTerms.join(", ")}`));
+  console.log(formatConsoleOutput(`Causal patterns found: ${detection.causalPatterns.length}`));
+  
+  console.log(formatConsoleOutput("\nCausal statements (sample):"));
+  // Show only a few unique statements to avoid duplicates
+  const uniqueStatements = new Set();
+  detection.causalStatements.forEach(statement => {
+    uniqueStatements.add(statement.trim());
+  });
+  
+  [...uniqueStatements].slice(0, 5).forEach((statement, index) => {
+    console.log(formatConsoleOutput(`${index + 1}. ${statement}`));
+  });
+
+  // Test causal statement extraction
+  console.log(formatConsoleOutput("\nTesting extractCausalStatements:"));
+  const extracted = extractCausalStatements(testText);
+  
+  // Remove duplicates by statement
+  const uniqueExtracted = [];
+  const statementSet = new Set();
+  
+  extracted.forEach(item => {
+    if (!statementSet.has(item.statement.trim())) {
+      statementSet.add(item.statement.trim());
+      uniqueExtracted.push(item);
+    }
+  });
+  
+  uniqueExtracted.forEach((item, index) => {
+    console.log(formatConsoleOutput(`\nStatement #${index + 1}:`));
+    console.log(formatConsoleOutput(`  Statement: ${item.statement.trim()}`));
+    console.log(formatConsoleOutput(`  Cause: ${item.cause || "(not identified)"}`));
+    console.log(formatConsoleOutput(`  Effect: ${item.effect || "(not identified)"}`));
+    console.log(formatConsoleOutput(`  Relationship: ${item.relationship}`));
+    console.log(formatConsoleOutput(`  Confidence: ${item.confidence.toFixed(2)}`));
+  });
+
+  // Extract causal statements from a dilemma description
+  if (dilemmaPath) {
+    try {
+      const dilemmaData = fs.readFileSync(dilemmaPath, 'utf8');
+      const dilemma = JSON.parse(dilemmaData);
+      
+      if (dilemma.description) {
+        console.log(formatConsoleOutput("\nExtracted causal relationships from dilemma description:"));
+        const dilemmaExtracted = extractCausalStatements(dilemma.description);
+        
+        if (dilemmaExtracted.length === 0) {
+          console.log(formatConsoleOutput("No causal relationships detected in the dilemma description."));
+        } else {
+          // Remove duplicates
+          const uniqueDilemmaExtracted = [];
+          const dilemmaStatementSet = new Set();
+          
+          dilemmaExtracted.forEach(item => {
+            const key = `${item.cause}:${item.effect}:${item.relationship}`;
+            if (!dilemmaStatementSet.has(key)) {
+              dilemmaStatementSet.add(key);
+              uniqueDilemmaExtracted.push(item);
+            }
+          });
+          
+          uniqueDilemmaExtracted.forEach((item, index) => {
+            console.log(formatConsoleOutput(`\nRelationship #${index + 1}:`));
+            console.log(formatConsoleOutput(`  Statement: ${item.statement.trim()}`));
+            console.log(formatConsoleOutput(`  Cause: ${item.cause || "(not identified)"}`));
+            console.log(formatConsoleOutput(`  Effect: ${item.effect || "(not identified)"}`));
+            console.log(formatConsoleOutput(`  Relationship: ${item.relationship}`));
+            console.log(formatConsoleOutput(`  Confidence: ${item.confidence.toFixed(2)}`));
+          });
+        }
+      }
+    } catch (error) {
+      console.error(formatConsoleOutput(`Error analyzing dilemma: ${error.message}`));
+    }
+  }
+}
+
+/**
+ * Test similarity metrics functionality
+ * @param {string} dilemmaPath - Path to the dilemma file for additional tests
+ */
+function testSimilarityMetrics(dilemmaPath) {
+  printFormatted("SIMILARITY METRICS TEST", "Testing enhanced similarity metrics functionality");
+
+  // Sample ethical terms to test similarity with
+  const testPairs = [
+    // Exact match
+    { term1: "autonomy", term2: "autonomy", description: "Exact match" },
+    
+    // Ethical term synonyms
+    { term1: "duty", term2: "obligation", description: "Ethical synonyms" },
+    { term1: "good", term2: "beneficial", description: "Ethical synonyms" },
+    { term1: "harm", term2: "damage", description: "Ethical synonyms" },
+    { term1: "justice", term2: "fairness", description: "Ethical synonyms" },
+    { term1: "care", term2: "compassion", description: "Ethical synonyms" },
+    
+    // Related but not synonyms
+    { term1: "beneficence", term2: "non-maleficence", description: "Related ethical concepts" },
+    { term1: "autonomy", term2: "freedom", description: "Related concepts" },
+    
+    // Different terms
+    { term1: "confidentiality", term2: "honesty", description: "Different ethical concepts" },
+    
+    // Phrases
+    { term1: "respect for autonomy", term2: "protecting patient autonomy", description: "Ethical phrases" },
+    { term1: "prioritize vulnerable patients", term2: "focus on those most at risk", description: "Similar ethical statements" },
+    { term1: "providing equitable care", term2: "ensuring just distribution of resources", description: "Similar ethical concepts in context" }
+  ];
+  
+  console.log(formatConsoleOutput("\nTesting individual similarity components:"));
+  console.log(formatConsoleOutput("Term 1\t\t\tTerm 2\t\t\tContainment\tWord Overlap\tEdit Sim\tSemantic Sim\tTotal"));
+  console.log(formatConsoleOutput("-----------------------------------------------------------------------------------------------"));
+  
+  testPairs.forEach(pair => {
+    // Calculate individual metrics
+    const containment = calculateContainment(pair.term1, pair.term2);
+    const wordOverlap = calculateWordOverlap(pair.term1, pair.term2);
+    const editSim = calculateEditSimilarity(pair.term1, pair.term2);
+    const semanticSim = calculateSemanticSimilarity(pair.term1, pair.term2);
+    
+    // Calculate total similarity
+    const totalSim = calculateSimilarity(pair.term1, pair.term2);
+    
+    // Format for display
+    const term1 = pair.term1.padEnd(20).substring(0, 20);
+    const term2 = pair.term2.padEnd(20).substring(0, 20);
+    
+    console.log(formatConsoleOutput(
+      `${term1}\t${term2}\t${containment.toFixed(2)}\t\t${wordOverlap.toFixed(2)}\t\t${editSim.toFixed(2)}\t${semanticSim.toFixed(2)}\t${totalSim.toFixed(2)}`
+    ));
+  });
+  
+  // Test with real dilemma data if available
+  if (dilemmaPath) {
+    try {
+      const dilemmaData = fs.readFileSync(dilemmaPath, 'utf8');
+      const dilemma = JSON.parse(dilemmaData);
+      
+      if (dilemma.framework_weights) {
+        printFormatted("FRAMEWORK SIMILARITY TEST", "Testing framework description similarity");
+        
+        const frameworks = Object.keys(dilemma.framework_weights);
+        
+        // Get framework descriptions if available
+        const frameworkDescriptions = {};
+        frameworks.forEach(fw => {
+          if (dilemma[fw] && dilemma[fw].description) {
+            frameworkDescriptions[fw] = dilemma[fw].description;
+          }
+        });
+        
+        // If we have at least two framework descriptions, compare them
+        const frameworkKeys = Object.keys(frameworkDescriptions);
+        if (frameworkKeys.length >= 2) {
+          console.log(formatConsoleOutput("\nFramework Description Similarities:"));
+          
+          for (let i = 0; i < frameworkKeys.length; i++) {
+            for (let j = i + 1; j < frameworkKeys.length; j++) {
+              const fw1 = frameworkKeys[i];
+              const fw2 = frameworkKeys[j];
+              
+              const similarity = calculateSimilarity(
+                frameworkDescriptions[fw1],
+                frameworkDescriptions[fw2]
+              );
+              
+              console.log(formatConsoleOutput(`${fw1} vs ${fw2}: ${similarity.toFixed(2)}`));
+            }
+          }
+        } else {
+          console.log(formatConsoleOutput("Not enough framework descriptions available for comparison."));
+        }
+      }
+      
+      // Compare stakeholder descriptions if available
+      if (dilemma.stakeholders && dilemma.stakeholders.length >= 2) {
+        printFormatted("STAKEHOLDER SIMILARITY TEST", "Testing stakeholder description similarity");
+        
+        // Extract stakeholder descriptions
+        const stakeholderDescs = {};
+        dilemma.stakeholders.forEach(stakeholder => {
+          if (typeof stakeholder === 'object' && stakeholder.description) {
+            stakeholderDescs[stakeholder.id || stakeholder.name] = stakeholder.description;
+          }
+        });
+        
+        const stakeholderKeys = Object.keys(stakeholderDescs);
+        if (stakeholderKeys.length >= 2) {
+          console.log(formatConsoleOutput("\nStakeholder Description Similarities:"));
+          
+          for (let i = 0; i < stakeholderKeys.length; i++) {
+            for (let j = i + 1; j < stakeholderKeys.length; j++) {
+              const s1 = stakeholderKeys[i];
+              const s2 = stakeholderKeys[j];
+              
+              const similarity = calculateSimilarity(
+                stakeholderDescs[s1],
+                stakeholderDescs[s2]
+              );
+              
+              console.log(formatConsoleOutput(`${s1} vs ${s2}: ${similarity.toFixed(2)}`));
+            }
+          }
+        } else {
+          console.log(formatConsoleOutput("Not enough stakeholder descriptions available for comparison."));
+        }
+      }
+      
+    } catch (error) {
+      console.error(formatConsoleOutput(`Error analyzing dilemma for similarity metrics: ${error.message}`));
+    }
+  }
+  
+  printFormatted("SYNONYM RECOGNITION TEST", "Testing ethical term synonym recognition");
+  
+  // Define some ethical term pairs to test
+  const synonymPairs = [
+    { term1: "good", term2: "beneficial" },
+    { term1: "duty", term2: "obligation" },
+    { term1: "harm", term2: "injury" },
+    { term1: "benefit", term2: "advantage" },
+    { term1: "autonomy", term2: "freedom" },
+    { term1: "justice", term2: "fairness" },
+    { term1: "utility", term2: "usefulness" },
+    // Non-synonyms for comparison
+    { term1: "autonomy", term2: "harm" },
+    { term1: "justice", term2: "care" },
+    { term1: "utility", term2: "duty" }
+  ];
+  
+  console.log(formatConsoleOutput("\nEthical Term Synonym Recognition:"));
+  console.log(formatConsoleOutput("Term 1\t\tTerm 2\t\tSemantic Similarity"));
+  console.log(formatConsoleOutput("-------------------------------------------"));
+  
+  synonymPairs.forEach(pair => {
+    const semanticSim = calculateSemanticSimilarity(pair.term1, pair.term2);
+    
+    const term1 = pair.term1.padEnd(12);
+    const term2 = pair.term2.padEnd(12);
+    
+    console.log(formatConsoleOutput(
+      `${term1}\t${term2}\t${semanticSim.toFixed(2)}`
+    ));
+  });
 } 
