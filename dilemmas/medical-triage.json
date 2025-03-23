@@ -1,0 +1,258 @@
+{
+  "id": "dilemma_medical_triage_1741827471086",
+  "title": "Medical Triage - Emergency Department",
+  "description": "A major accident has brought multiple critically injured patients to an emergency department simultaneously. There are insufficient medical resources (staff, equipment, and operating rooms) to treat all patients immediately. As the attending physician, you must decide the order in which patients receive care, knowing that delayed treatment significantly reduces survival chances for some patients.",
+  "situation": {
+    "parameters": {
+      "num_people_total": { "value": 10 },
+      "num_sustainable": { "value": 6 },
+      "fatal_outcome": { "value": true },
+      "actor_position": { "value": "authority" },
+      "actor_intervention_type": { "value": "allocation_decision" },
+      "actor_risk": { "value": "none" },
+      "resource_divisibility": { "value": "indivisible" },
+      "num_people_affected": { "value": 10 },
+      "certainty_of_outcome": { "value": "moderate" },
+      "information_availability": { "value": "partial" },
+      "time_pressure": { "value": "high" },
+      "alternatives": { "value": "limited" },
+      "relationship_to_beneficiary": { "value": "professional_care" },
+      "property_value": { "value": 0 },
+      "life_at_stake": { "value": true }
+    },
+    "constraints": {
+      "time_limited_decision": true,
+      "legality": "legal"
+    }
+  },
+  "parameters": {
+    "population_served_option_a": {
+      "value": 5,
+      "description": "Number of people who would be helped by Option A (medical urgency)"
+    },
+    "benefit_per_person_option_a": {
+      "value": 8,
+      "description": "Average benefit to each person under Option A (1-10 scale)"
+    },
+    "population_served_option_b": {
+      "value": 3,
+      "description": "Number of people who would be helped by Option B (societal utility)"
+    },
+    "benefit_per_person_option_b": {
+      "value": 9,
+      "description": "Average benefit to each person under Option B (1-10 scale)"
+    },
+    "urgency_option_a": {
+      "value": 9,
+      "description": "Urgency level of needs addressed by Option A (1-10 scale)"
+    },
+    "urgency_option_b": {
+      "value": 7,
+      "description": "Urgency level of needs addressed by Option B (1-10 scale)"
+    },
+    "duty_alignment_option_a": {
+      "value": 8,
+      "description": "Alignment with medical duty of care for Option A (1-10 scale)"
+    },
+    "duty_alignment_option_b": {
+      "value": 6,
+      "description": "Alignment with medical duty of care for Option B (1-10 scale)"
+    },
+    "vulnerable_patients_protection": {
+      "value": 7,
+      "description": "Degree to which vulnerable patients are protected (1-10 scale)"
+    },
+    "existing_relationships_value": {
+      "value": 5,
+      "description": "Value placed on existing doctor-patient relationships (1-10 scale)"
+    },
+    "compassion_expression": {
+      "value": 8,
+      "description": "Degree to which approach expresses compassion (1-10 scale)"
+    },
+    "fairness_procedure": {
+      "value": 6,
+      "description": "Procedural fairness of the triage approach (1-10 scale)"
+    },
+    "younger_patient_priority": {
+      "value": 5,
+      "description": "Priority given to younger patients with more life years ahead (1-10 scale)"
+    },
+    "resource_allocation_equity": {
+      "value": 7,
+      "description": "Equity in resource allocation across patient groups (1-10 scale)"
+    },
+    "deportation_risk": {
+      "value": 0,
+      "description": "Risk of deportation for patients (not applicable in this scenario)"
+    },
+    "specialized_care_importance": {
+      "value": 8,
+      "description": "Importance of specialized care for specific conditions (1-10 scale)"
+    }
+  },
+  "frameworks": [
+    "utilitarian",
+    "justice",
+    "deontology",
+    "care_ethics",
+    "virtue_ethics"
+  ],
+  "stakeholders": [
+    {
+      "id": "critical_patients",
+      "name": "Critically Injured Patients",
+      "concerns": "Immediate life-saving care, survival, quality of care",
+      "influence": 0.9
+    },
+    {
+      "id": "stable_patients",
+      "name": "Stable but Injured Patients",
+      "concerns": "Timely care, pain management, fair treatment",
+      "influence": 0.5
+    },
+    {
+      "id": "medical_staff",
+      "name": "Medical Staff",
+      "concerns": "Ethical practice, resource efficiency, patient outcomes",
+      "influence": 0.8
+    },
+    {
+      "id": "hospital_administration",
+      "name": "Hospital Administration",
+      "concerns": "Resource allocation, legal compliance, institutional reputation",
+      "influence": 0.6
+    },
+    {
+      "id": "patients_families",
+      "name": "Patients' Families",
+      "concerns": "Care for loved ones, communication, emotional support",
+      "influence": 0.7
+    }
+  ],
+  "contextual_factors": [
+    {
+      "factor": "decision_maker_role",
+      "value": "professional_authority",
+      "relevance": "high",
+      "explanation": "The decision maker is a physician with professional expertise and authority."
+    },
+    {
+      "factor": "relationship_between_stakeholders",
+      "value": "professional_care_relationship",
+      "relevance": "high",
+      "explanation": "The physician has a professional duty of care to all patients."
+    },
+    {
+      "factor": "certainty_of_outcome",
+      "value": "moderate",
+      "relevance": "high",
+      "explanation": "Medical outcomes have probabilistic certainty but never absolute certainty."
+    },
+    {
+      "factor": "time_pressure",
+      "value": "high",
+      "relevance": "high",
+      "explanation": "Decisions must be made quickly to maximize chances of survival."
+    }
+  ],
+  "possible_actions": [
+    {
+      "id": "approve_option_a",
+      "action": "medical_urgency",
+      "description": "Prioritize those most likely to die without immediate care",
+      "predicted_consequences": "Patients are treated based on medical urgency, which may optimize immediate survival but not necessarily long-term outcomes.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "5 lives saved, 3 lives lost (most critical patients)",
+            "probability": 0.8,
+            "utility": {
+              "lives_saved": 5,
+              "lives_lost": -3,
+              "total": 2
+            }
+          },
+          {
+            "description": "4 lives saved, 4 lives lost (some critical patients not saved in time)",
+            "probability": 0.2,
+            "utility": {
+              "lives_saved": 4,
+              "lives_lost": -4,
+              "total": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "approve_option_b",
+      "action": "societal_utility",
+      "description": "Prioritize those whose survival would benefit the most people",
+      "predicted_consequences": "Patients are prioritized based on their societal role or contribution, which might maximize societal welfare but raises equity concerns.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "Surgeon, nurse and researcher saved (3 people with high societal impact)",
+            "probability": 0.7,
+            "utility": {
+              "lives_saved": 3,
+              "lives_lost": -5,
+              "societal_benefit": 10,
+              "total": 8
+            }
+          },
+          {
+            "description": "Only 2 patients saved, with less societal value",
+            "probability": 0.3,
+            "utility": {
+              "lives_saved": 2,
+              "lives_lost": -6,
+              "societal_benefit": 2,
+              "total": -2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "negotiate_compromises",
+      "action": "balanced_approach",
+      "description": "Use a balanced approach considering both medical urgency and other factors",
+      "predicted_consequences": "A balanced approach that considers multiple factors may optimize overall outcomes.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "4 lives saved including some high-impact individuals",
+            "probability": 0.65,
+            "utility": {
+              "lives_saved": 4,
+              "lives_lost": -4,
+              "societal_benefit": 6,
+              "procedural_fairness": 7,
+              "total": 13
+            }
+          },
+          {
+            "description": "3 lives saved with mixed priorities",
+            "probability": 0.35,
+            "utility": {
+              "lives_saved": 3,
+              "lives_lost": -5,
+              "societal_benefit": 4,
+              "procedural_fairness": 7,
+              "total": 9
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "ethical_dimensions": [
+    "fair_allocation",
+    "utilitarian_outcomes",
+    "professional_ethics",
+    "right_to_treatment",
+    "procedural_justice"
+  ]
+} 

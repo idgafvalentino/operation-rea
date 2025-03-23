@@ -1,0 +1,10 @@
+{
+  "name": "operation-rea",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Clean REA system implementation",
+  "main": "process-dilemma-direct.js",
+  "scripts": {
+    "test": "node process-dilemma-direct.js dilemmas/medical-triage.json"
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "id": "parent_child_medical_dilemma_2025",
+  "title": "Parent-Child Medical Dilemma: Religious Beliefs vs. Medical Necessity",
+  "description": "You are a doctor treating a 14-year-old with leukemia. The standard treatment protocol has a 70% chance of success, but requires multiple blood transfusions. The child's parents are devout members of a religion that prohibits blood transfusions on theological grounds. The child, though frightened, expresses desire to receive treatment despite their religious upbringing. The parents are attempting to legally block the treatment. As the doctor, the hospital legal team has informed you that a court order allowing treatment could be obtained, but it would take several days during which the child's condition might deteriorate significantly. Should you respect the parents' religious autonomy, wait for legal intervention, or pursue emergency treatment against their wishes?",
+  "situation": {
+    "type": "ComplexMedicalDilemma",
+    "parameters": {
+      "life_at_stake": true,
+      "quality_of_life_at_stake": "high",
+      "treatment_success_probability": 0.7,
+      "treatment_risk": "moderate",
+      "alternatives_exhausted": true,
+      "relationship_to_patient": "professional_care",
+      "autonomy_vs_wellbeing": "multi_party_conflict",
+      "patient_capacity": "adolescent_developing",
+      "patient_consent": "given",
+      "guardian_consent": "explicitly_refused",
+      "religious_conflict": true,
+      "delay_impact": "significant"
+    },
+    "constraints": {
+      "legality": "requires_court_intervention",
+      "time_limited_decision": "high",
+      "intervention_reversibility": "irreversible"
+    }
+  },
+  "parameters": {
+    "population_served_option_a": {
+      "value": 1,
+      "description": "Number of people who would be helped by respecting parents' refusal"
+    },
+    "benefit_per_person_option_a": {
+      "value": 3,
+      "description": "Average benefit to religious autonomy under option A (1-10 scale)"
+    },
+    "population_served_option_b": {
+      "value": 1,
+      "description": "Number of people who would be helped by emergency treatment"
+    },
+    "benefit_per_person_option_b": {
+      "value": 8,
+      "description": "Average health benefit to the child under option B (1-10 scale)"
+    },
+    "urgency_option_a": {
+      "value": 1,
+      "description": "Urgency level of respecting religious autonomy (1-10 scale)"
+    },
+    "urgency_option_b": {
+      "value": 9,
+      "description": "Urgency level of child's medical treatment (1-10 scale)"
+    },
+    "duty_alignment_option_a": {
+      "value": 6,
+      "description": "Alignment with duty to respect autonomy (1-10 scale)"
+    },
+    "duty_alignment_option_b": {
+      "value": 8,
+      "description": "Alignment with medical duty of care (1-10 scale)"
+    },
+    "vulnerable_patients_protection": {
+      "value": 9,
+      "description": "Degree to which child as vulnerable patient is protected (1-10 scale)"
+    },
+    "existing_relationships_value": {
+      "value": 7,
+      "description": "Value placed on existing doctor-family relationships (1-10 scale)"
+    },
+    "compassion_expression": {
+      "value": 7,
+      "description": "Degree to which approach expresses compassion (1-10 scale)"
+    },
+    "fairness_procedure": {
+      "value": 5,
+      "description": "Procedural fairness of the approach (1-10 scale)"
+    },
+    "younger_patient_priority": {
+      "value": 8,
+      "description": "Priority given to young patient with more life years ahead (1-10 scale)"
+    },
+    "resource_allocation_equity": {
+      "value": 6,
+      "description": "Equity in resource allocation considering competing values (1-10 scale)"
+    },
+    "deportation_risk": {
+      "value": 0,
+      "description": "Risk of deportation for patients (not applicable in this scenario)"
+    },
+    "specialized_care_importance": {
+      "value": 9,
+      "description": "Importance of specialized leukemia treatment for this case (1-10 scale)"
+    }
+  },
+  "frameworks": [
+    "utilitarian",
+    "justice",
+    "deontology",
+    "care_ethics",
+    "virtue_ethics"
+  ],
+  "contextual_factors": [
+    {
+      "factor": "patient_understanding",
+      "value": "moderate",
+      "relevance": "high",
+      "explanation": "The child understands the medical implications but is influenced by both fear and religious upbringing."
+    },
+    {
+      "factor": "parental_motivation",
+      "value": "religious_conviction",
+      "relevance": "high",
+      "explanation": "The parents' refusal stems from genuine religious belief, not negligence or malice."
+    },
+    {
+      "factor": "medical_consensus",
+      "value": "strongly_favorable",
+      "relevance": "high",
+      "explanation": "Medical experts unanimously recommend the treatment including transfusions as medically necessary."
+    },
+    {
+      "factor": "legal_framework",
+      "value": "complex",
+      "relevance": "high",
+      "explanation": "Legal precedents exist supporting both parental religious rights and medical intervention for minors."
+    },
+    {
+      "factor": "time_pressure",
+      "value": "increasing",
+      "relevance": "high",
+      "explanation": "Each day of delay reduces treatment efficacy by approximately 5%."
+    },
+    {
+      "factor": "institutional_policy",
+      "value": "cautious",
+      "relevance": "medium",
+      "explanation": "The hospital generally avoids conflict with parents but has sought court orders in extreme cases."
+    },
+    {
+      "factor": "alternative_treatments",
+      "value": "inferior",
+      "relevance": "medium",
+      "explanation": "Non-transfusion treatments exist but have only a 20% success rate for this condition."
+    }
+  ],
+  "possible_actions": [
+    {
+      "id": "respect_parents_refusal",
+      "action": "respect_parents_refusal",
+      "description": "Honor the parents' religious objection to blood transfusions",
+      "predicted_consequences": "The child would receive alternative treatment with lower chance of success. The doctor-family relationship would be preserved, and religious autonomy respected."
+    },
+    {
+      "id": "wait_for_court_order",
+      "action": "wait_for_court_order",
+      "description": "Pursue legal intervention while providing non-transfusion care",
+      "predicted_consequences": "The legal process would clarify rights but treatment efficacy would decrease during the waiting period. The child's condition might deteriorate significantly."
+    },
+    {
+      "id": "emergency_intervention",
+      "action": "emergency_intervention",
+      "description": "Provide complete treatment including transfusions immediately",
+      "predicted_consequences": "Immediate treatment would maximize medical benefit but violate parental rights. Legal and professional repercussions are likely regardless of medical outcome."
+    },
+    {
+      "id": "seek_compromise",
+      "action": "seek_compromise",
+      "description": "Negotiate for partial treatment acceptable to both sides",
+      "predicted_consequences": "Attempt to find partially acceptable solutions that might include some but not all recommended treatments, potentially with mixed results."
+    }
+  ],
+  "stakeholders": [
+    {
+      "id": "child_patient",
+      "name": "14-year-old Patient",
+      "concerns": "Survival, fear of treatment, conflicting religious and health values",
+      "influence": 0.8
+    },
+    {
+      "id": "parents",
+      "name": "Religious Parents",
+      "concerns": "Religious conviction, parental authority, child's spiritual wellbeing",
+      "influence": 0.9
+    },
+    {
+      "id": "medical_staff",
+      "name": "Treating Physicians",
+      "concerns": "Medical ethics, professional standards, patient outcomes",
+      "influence": 0.8
+    },
+    {
+      "id": "hospital_administration",
+      "name": "Hospital Administration",
+      "concerns": "Legal liability, institutional policies, ethical protocols",
+      "influence": 0.7
+    },
+    {
+      "id": "religious_community",
+      "name": "Religious Community",
+      "concerns": "Theological principles, community integrity, religious freedom",
+      "influence": 0.5
+    }
+  ],
+  "ethical_dimensions": [
+    "autonomy_vs_beneficence",
+    "competing_autonomies",
+    "religious_freedom_boundaries",
+    "best_interests_standard",
+    "professional_medical_ethics",
+    "developing_minor_rights",
+    "parental_authority_limits"
+  ],
+  "conflicting_elements": {
+    "heinz_dilemma": {
+      "similarity": "Life-saving treatment being blocked by another's legitimate claim (property rights vs. religious rights)",
+      "conclusion": "Would favor intervention to save life regardless of constraints",
+      "framework_specific": {
+        "Utilitarianism": "The life saved outweighs the religious principle violated",
+        "Care Ethics": "The vulnerable child's immediate needs take priority over abstract principles"
+      }
+    },
+    "crying_baby_dilemma": {
+      "similarity": "Need to act decisively when time is critical; tension between immediate needs and principles",
+      "conclusion": "Would favor respecting deeply held principles even with serious consequences",
+      "framework_specific": {
+        "Kantian Deontology": "Religious beliefs represent absolute moral principles that cannot be violated instrumentally",
+        "Virtue Ethics": "The virtuous doctor respects deeply held religious convictions while seeking alternatives"
+      }
+    },
+    "transplant_dilemma": {
+      "similarity": "Medical authority; professional ethics in conflict with individual rights",
+      "conclusion": "Would prohibit violating autonomy even with beneficial intent",
+      "framework_specific": {
+        "Professional Ethics": "Medical practitioners must respect valid refusal of treatment even when disagreeing",
+        "Contractarianism": "The social contract includes protection of religious minority rights against medical paternalism"
+      }
+    },
+    "sheriff_dilemma": {
+      "similarity": "Authority figure making decision for vulnerable others; legal vs. moral authority",
+      "conclusion": "Would favor legal processes over unilateral action",
+      "framework_specific": {
+        "Social Contract Theory": "Legal procedures exist precisely to resolve such complex conflicts of rights",
+        "Communitarian Ethics": "The community's established procedures for resolving conflicts should be followed"
+      }
+    }
+  }
+} 
