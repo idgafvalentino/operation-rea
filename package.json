@@ -5,6 +5,17 @@
   "description": "Clean REA system implementation",
   "main": "process-dilemma-direct.js",
   "scripts": {
-    "test": "node process-dilemma-direct.js dilemmas/medical-triage.json"
+    "test": "node process-dilemma-direct.js dilemmas/medical-triage.json",
+    "start": "node process-dilemma-direct.js",
+    "process:medical": "node process-dilemma-direct.js dilemmas/medical-triage.json",
+    "process:parent-child": "node process-dilemma-direct.js dilemmas/parent-child-medical-dilemma.json"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "path": "0.12.7",
+    "url": "0.11.0"
   }
 }
