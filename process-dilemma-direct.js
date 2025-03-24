@@ -7,7 +7,7 @@
  * 3. Conflict detection
  * 4. Conflict resolution
  * 
- * Usage: node process-dilemma-direct.js path/to/dilemma.json [--format=json|text|csv] [--no-color]
+ * Usage: node process-dilemma-direct.js path/to/dilemma.json [--format=json|text|csv] [--no-color] [--sequential]
  */
 
 import fs from 'fs';
@@ -16,8 +16,12 @@ import { fileURLToPath } from 'url';
 import { 
   processEthicalDilemma, 
   detectConflicts, 
-  resolveConflicts 
-} from './src/testing/reaTestAdapter.js';
+  resolveConflicts,
+  createREASystemAdapter
+} from './src/core/rea.js';
+import {
+  performSequentialAnalysis
+} from './src/analysis/sequential/sequentialAnalysis.js';
 import {
   validateDilemma,
   standardizeResolutionDetail,
@@ -33,10 +37,23 @@ import {
   setColorOutput
 } from './src/utils/logging.js';
 
-// Only import these when testing causal detection
+// Import from refactored modules
 import { detectCausalLanguage, extractCausalStatements } from './src/analysis/causalDetection.js';
-// Import similarity metrics for testing
-import { calculateSimilarity, calculateContainment, calculateWordOverlap, calculateEditSimilarity, calculateSemanticSimilarity } from './src/utils/general.js';
+import { 
+  calculateSimilarity, 
+  calculateContainment, 
+  calculateWordOverlap, 
+  calculateEditSimilarity, 
+  calculateSemanticSimilarity 
+} from './src/utils/general.js';
+
+// Import conflict analysis functions from dedicated module
+import {
+  calculateFrameworkDistance,
+  analyzeConflictNature,
+  analyzeConflictSeverity,
+  identifyCompromiseAreas
+} from './src/analysis/conflictAnalysis.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,7 +62,7 @@ const __dirname = path.dirname(__filename);
 const dilemmaArg = process.argv[2];
 if (!dilemmaArg) {
   console.error('Please provide a path to the dilemma JSON file');
-  console.error('Usage: node process-dilemma-direct.js path/to/dilemma.json [--format=json|text|csv] [--no-color]');
+  console.error('Usage: node process-dilemma-direct.js path/to/dilemma.json [--format=json|text|csv] [--no-color] [--sequential]');
   process.exit(1);
 }
 
@@ -58,7 +75,8 @@ const options = {
   color: true,
   width: DISPLAY_FORMAT_CONFIG.defaultConsoleWidth,
   testCausal: false,
-  testSimilarity: false
+  testSimilarity: false,
+  useSequential: false
 };
 
 process.argv.slice(3).forEach(arg => {
@@ -72,6 +90,8 @@ process.argv.slice(3).forEach(arg => {
     options.testCausal = true;
   } else if (arg === '--test-similarity') {
     options.testSimilarity = true;
+  } else if (arg === '--sequential') {
+    options.useSequential = true;
   }
 });
 
@@ -167,6 +187,46 @@ try {
   
   printFormatted('DILEMMA', `${standardizedDilemma.title}`);
   console.log(formatConsoleOutput(`Description: ${standardizedDilemma.description}\n`));
+  
+  // Check if sequential thinking approach should be used
+  if (options.useSequential) {
+    console.log(formatConsoleOutput(`\nUsing sequential thinking approach for dilemma analysis...`));
+    
+    // Perform sequential analysis
+    const sequentialResult = performSequentialAnalysis(dilemma);
+    
+    // Display sequential reasoning chain
+    printFormatted('SEQUENTIAL REASONING CHAIN', '');
+    
+    sequentialResult.finalRecommendation.reasoningChain.forEach(step => {
+      console.log(formatConsoleOutput(`\n--- STEP ${step.step}: ${step.title} ---`));
+      console.log(formatConsoleOutput(`${step.description}\n`));
+      
+      step.insights.forEach(insight => {
+        console.log(formatConsoleOutput(`  • ${insight}`));
+      });
+    });
+    
+    // Display final recommendation
+    printFormatted('FINAL RECOMMENDATION (SEQUENTIAL)', '');
+    console.log(formatConsoleOutput(`Recommended Action: ${sequentialResult.finalRecommendation.action.replace(/_/g, ' ')}`));
+    console.log(formatConsoleOutput(`Confidence: ${sequentialResult.finalRecommendation.confidence}%`));
+    console.log(formatConsoleOutput(`Supporting Frameworks: ${sequentialResult.finalRecommendation.supportingFrameworks.join(', ')}`));
+    console.log(formatConsoleOutput(`Opposing Frameworks: ${sequentialResult.finalRecommendation.opposingFrameworks.join(', ')}`));
+    
+    // Save results
+    const resultsDir = path.join(__dirname, 'results');
+    if (!fs.existsSync(resultsDir)) {
+      fs.mkdirSync(resultsDir);
+    }
+    
+    const resultPath = path.join(resultsDir, `${dilemma.id}_sequential_${Date.now()}.json`);
+    fs.writeFileSync(resultPath, JSON.stringify(sequentialResult, null, 2));
+    console.log(formatConsoleOutput(`\nSequential analysis saved to: ${resultPath}`));
+    
+    console.log(formatConsoleOutput(`\n=== ANALYSIS COMPLETE ===`));
+    process.exit(0);
+  }
   
   // STEP 1: Framework Analysis
   console.log(formatConsoleOutput('STEP 1: Processing dilemma through framework analysis...'));

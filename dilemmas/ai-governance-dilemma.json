@@ -1,0 +1,408 @@
+{
+  "id": "ai_governance_dilemma",
+  "title": "AI Governance and Regulation Ethics",
+  "description": "As the chairperson of a newly formed National AI Ethics Committee, you must recommend a regulatory approach for advanced AI systems. A revolutionary new language model has demonstrated capabilities that exceed human performance in critical domains including medicine, law, and engineering. Various stakeholders are pressuring for different regulatory frameworks, from minimal oversight to complete moratoriums.",
+  "situation": {
+    "parameters": {
+      "num_people_total": { "value": 350000000 },
+      "num_sustainable": { "value": 350000000 },
+      "fatal_outcome": { "value": false },
+      "actor_position": { "value": "authority" },
+      "actor_intervention_type": { "value": "policy_decision" },
+      "actor_risk": { "value": "professional" },
+      "resource_divisibility": { "value": "divisible" },
+      "num_people_affected": { "value": 350000000 },
+      "certainty_of_outcome": { "value": "low" },
+      "information_availability": { "value": "partial" },
+      "time_pressure": { "value": "moderate" },
+      "alternatives": { "value": "multiple" },
+      "relationship_to_beneficiary": { "value": "indirect" },
+      "property_value": { "value": 500000000000 },
+      "life_at_stake": { "value": true }
+    },
+    "constraints": {
+      "time_limited_decision": true,
+      "legality": "legal"
+    }
+  },
+  "parameters": {
+    "number_of_people_affected": {
+      "value": 350000000,
+      "description": "Total population potentially affected by AI governance decisions"
+    },
+    "severity_of_immediate_harm": {
+      "value": 6,
+      "description": "Potential severity of immediate harm from unregulated AI (1-10 scale)"
+    },
+    "probability_of_catastrophic_risk": {
+      "value": 0.02,
+      "description": "Estimated probability of catastrophic risks from advanced AI"
+    },
+    "economic_impact_billions": {
+      "value": 500,
+      "description": "Potential economic impact in billions of dollars"
+    },
+    "regulatory_implementation_cost": {
+      "value": 3000000000,
+      "description": "Cost to implement regulatory framework in dollars"
+    },
+    "ai_development_delay_months_option_a": {
+      "value": 24,
+      "description": "Estimated delay in AI development with strict regulation (months)"
+    },
+    "ai_development_delay_months_option_b": {
+      "value": 6,
+      "description": "Estimated delay in AI development with balanced approach (months)"
+    },
+    "ai_development_delay_months_option_c": {
+      "value": 0,
+      "description": "Estimated delay in AI development with minimal regulation (months)"
+    },
+    "ai_development_delay_months_option_d": {
+      "value": 12,
+      "description": "Estimated delay in AI development with research and delay approach (months)"
+    },
+    "jobs_displaced": {
+      "value": 15000000,
+      "description": "Estimated number of jobs displaced by AI advancement"
+    },
+    "jobs_created": {
+      "value": 8000000,
+      "description": "Estimated number of new jobs created by AI advancement"
+    },
+    "privacy_impact_level": {
+      "value": 9,
+      "description": "Level of privacy impact from AI systems (1-10 scale)"
+    },
+    "societal_inequality_impact": {
+      "value": 7,
+      "description": "Potential impact on societal inequality (1-10 scale)"
+    },
+    "misinformation_amplification_risk": {
+      "value": 8,
+      "description": "Risk of misinformation amplification from AI systems (1-10 scale)"
+    },
+    "population_served_option_a": {
+      "value": 330000000,
+      "description": "Population potentially benefiting from strict regulatory approach"
+    },
+    "population_served_option_b": {
+      "value": 330000000,
+      "description": "Population potentially benefiting from balanced oversight approach"
+    },
+    "population_served_option_c": {
+      "value": 180000000,
+      "description": "Population potentially benefiting from minimal intervention approach"
+    },
+    "population_served_option_d": {
+      "value": 290000000,
+      "description": "Population potentially benefiting from research and delay approach"
+    },
+    "benefit_option_a": {
+      "value": 65,
+      "description": "Total benefit rating for strict regulatory approach (1-100 scale)"
+    },
+    "harm_option_a": {
+      "value": 40,
+      "description": "Total harm rating for strict regulatory approach (1-100 scale)"
+    },
+    "benefit_option_b": {
+      "value": 70,
+      "description": "Total benefit rating for balanced oversight approach (1-100 scale)"
+    },
+    "harm_option_b": {
+      "value": 35,
+      "description": "Total harm rating for balanced oversight approach (1-100 scale)"
+    },
+    "benefit_option_c": {
+      "value": 85,
+      "description": "Total benefit rating for minimal intervention approach (1-100 scale)"
+    },
+    "harm_option_c": {
+      "value": 75,
+      "description": "Total harm rating for minimal intervention approach (1-100 scale)"
+    },
+    "benefit_option_d": {
+      "value": 60,
+      "description": "Total benefit rating for research and delay approach (1-100 scale)"
+    },
+    "harm_option_d": {
+      "value": 30,
+      "description": "Total harm rating for research and delay approach (1-100 scale)"
+    },
+    "benefit_per_person_option_a": {
+      "value": 7,
+      "description": "Average benefit per person from strict regulatory approach (1-10 scale)"
+    },
+    "benefit_per_person_option_b": {
+      "value": 8,
+      "description": "Average benefit per person from balanced oversight approach (1-10 scale)"
+    },
+    "urgency_option_a": {
+      "value": 8,
+      "description": "Urgency level for implementing strict regulatory approach (1-10 scale)"
+    },
+    "urgency_option_b": {
+      "value": 6,
+      "description": "Urgency level for implementing balanced oversight approach (1-10 scale)"
+    },
+    "specialized_care_importance": {
+      "value": 8,
+      "description": "Importance of specialized AI safety measures (1-10 scale)"
+    },
+    "deportation_risk": {
+      "value": 0,
+      "description": "Risk of deportation (not applicable in this scenario)"
+    }
+  },
+  "frameworks": [
+    "utilitarian",
+    "justice",
+    "deontology",
+    "care_ethics",
+    "virtue_ethics"
+  ],
+  "stakeholders": [
+    {
+      "id": "ai_developers",
+      "name": "AI Developers and Companies",
+      "concerns": "Innovation freedom, competitive advantage, profit potential, technical safeguards",
+      "influence": 0.9,
+      "number": 500000,
+      "impact": {
+        "approve_option_a": -8,
+        "approve_option_b": -4,
+        "approve_option_c": 9,
+        "approve_option_d": 2
+      },
+      "vulnerability": 0.3,
+      "power_level": 0.9
+    },
+    {
+      "id": "general_public",
+      "name": "General Public",
+      "concerns": "Safety, privacy, job security, technological benefits",
+      "influence": 0.5,
+      "number": 330000000,
+      "impact": {
+        "approve_option_a": 4,
+        "approve_option_b": 6,
+        "approve_option_c": -5,
+        "approve_option_d": 7
+      },
+      "vulnerability": 0.7,
+      "power_level": 0.5
+    },
+    {
+      "id": "marginalized_communities",
+      "name": "Marginalized Communities",
+      "concerns": "Algorithmic bias, equitable access, representation in datasets",
+      "influence": 0.2,
+      "number": 85000000,
+      "impact": {
+        "approve_option_a": 7,
+        "approve_option_b": 5,
+        "approve_option_c": -8,
+        "approve_option_d": 6
+      },
+      "vulnerability": 0.9,
+      "power_level": 0.2
+    },
+    {
+      "id": "industry_leaders",
+      "name": "Industry Leaders",
+      "concerns": "Market leadership, competitive advantage, regulatory influence",
+      "influence": 0.9,
+      "number": 1000,
+      "impact": {
+        "approve_option_a": -9,
+        "approve_option_b": -3,
+        "approve_option_c": 8,
+        "approve_option_d": 1
+      },
+      "vulnerability": 0.2,
+      "power_level": 0.9
+    },
+    {
+      "id": "safety_researchers",
+      "name": "AI Safety Researchers",
+      "concerns": "Existential risks, alignment problems, technical safeguards",
+      "influence": 0.6,
+      "number": 5000,
+      "impact": {
+        "approve_option_a": 9,
+        "approve_option_b": 7,
+        "approve_option_c": -7,
+        "approve_option_d": 8
+      },
+      "vulnerability": 0.4,
+      "power_level": 0.6
+    },
+    {
+      "id": "future_generations",
+      "name": "Future Generations",
+      "concerns": "Long-term impacts, existential risks, sustainable development",
+      "influence": 0.0,
+      "number": 1000000000,
+      "impact": {
+        "approve_option_a": 8,
+        "approve_option_b": 6,
+        "approve_option_c": -9,
+        "approve_option_d": 7
+      },
+      "vulnerability": 1.0,
+      "power_level": 0.0
+    }
+  ],
+  "contextual_factors": [
+    {
+      "factor": "decision_maker_role",
+      "value": "committee_chairperson",
+      "relevance": "high",
+      "explanation": "The decision maker is a chairperson with coordinating authority but must build consensus."
+    },
+    {
+      "factor": "stakeholder_power_dynamics",
+      "value": "unequal",
+      "relevance": "high",
+      "explanation": "Significant power imbalances exist between industry, public, and vulnerable populations."
+    },
+    {
+      "factor": "time_constraints",
+      "value": "moderate",
+      "relevance": "medium",
+      "explanation": "There is pressure to act quickly but some time for deliberation exists."
+    },
+    {
+      "factor": "legal_obligations",
+      "value": "advisory",
+      "relevance": "medium",
+      "explanation": "The committee has advisory capacity but recommendations carry significant weight."
+    }
+  ],
+  "possible_actions": [
+    {
+      "id": "approve_option_a",
+      "action": "strict_regulatory_framework",
+      "description": "Implement a comprehensive regulatory framework requiring rigorous safety testing, transparency measures, and ethical guidelines before any advanced AI system can be deployed. This includes mandatory auditing, explainability requirements, and a multi-stage approval process.",
+      "predicted_consequences": "Significant slowdown in AI advancement and deployment. Economic opportunities delayed. Potential competitive disadvantage internationally. Safer and more robust AI systems. More equitable distribution of benefits.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "Successful prevention of AI harms with moderate innovation impact",
+            "probability": 0.7,
+            "utility": {
+              "ai_safety": 85,
+              "innovation_loss": -40,
+              "equity_gain": 75,
+              "total": 120
+            }
+          },
+          {
+            "description": "Over-regulation stifles innovation with limited safety gains",
+            "probability": 0.3,
+            "utility": {
+              "ai_safety": 70,
+              "innovation_loss": -80,
+              "competitive_disadvantage": -60,
+              "total": -70
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "approve_option_b",
+      "action": "balanced_oversight_approach",
+      "description": "Create a tiered regulatory system where AI applications in high-risk domains (healthcare, transportation, etc.) face stricter oversight, while lower-risk applications operate under more flexible guidelines. Includes regular assessments and industry self-governance with government oversight.",
+      "predicted_consequences": "Some delays in high-risk domains, continued innovation in others. Moderate economic impact with focused compliance costs. Variable safety outcomes across sectors. Adaptive regulatory framework that evolves with technology.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "Effective balance between innovation and safety",
+            "probability": 0.6,
+            "utility": {
+              "ai_safety": 70,
+              "innovation_preservation": 65,
+              "adaptability": 80,
+              "total": 215
+            }
+          },
+          {
+            "description": "Regulatory gaps in emerging applications with moderate harms",
+            "probability": 0.4,
+            "utility": {
+              "ai_safety": 50,
+              "innovation_preservation": 75,
+              "harm_from_gaps": -40,
+              "total": 85
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "approve_option_c",
+      "action": "minimal_intervention",
+      "description": "Focus primarily on industry self-regulation with voluntary guidelines and standards. Government involvement limited to addressing proven harms after they occur. Emphasize innovation and competitive advantage in AI development.",
+      "predicted_consequences": "Rapid AI advancement and economic growth. Early adoption advantages and market dominance opportunities. Increased risk of safety incidents, misuse, and concentration of power.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "Accelerated innovation with manageable harms",
+            "probability": 0.3,
+            "utility": {
+              "innovation_gain": 95,
+              "economic_growth": 85,
+              "moderate_harms": -40,
+              "total": 140
+            }
+          },
+          {
+            "description": "Significant AI safety incidents with broad societal impacts",
+            "probability": 0.7,
+            "utility": {
+              "innovation_gain": 90,
+              "economic_growth": 80,
+              "safety_incidents": -95,
+              "power_concentration": -70,
+              "inequality_increase": -65,
+              "total": -60
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "approve_option_d",
+      "action": "research_and_delay_approach",
+      "description": "Institute a temporary 12-month partial moratorium on deploying the most advanced AI systems while conducting intensive research on governance frameworks. Allow continued development and testing under controlled conditions.",
+      "predicted_consequences": "Pause in deployment of cutting-edge systems. Focused research effort. Some competitive disadvantage. More informed regulatory approach based on research findings.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "Research produces effective governance frameworks",
+            "probability": 0.5,
+            "utility": {
+              "safety_knowledge": 85,
+              "governance_quality": 80,
+              "temporary_innovation_loss": -30,
+              "total": 135
+            }
+          },
+          {
+            "description": "Research period yields limited practical insights",
+            "probability": 0.5,
+            "utility": {
+              "safety_knowledge": 40,
+              "governance_quality": 35,
+              "temporary_innovation_loss": -30,
+              "competitive_disadvantage": -45,
+              "total": 0
+            }
+          }
+        ]
+      }
+    }
+  ]
+} 

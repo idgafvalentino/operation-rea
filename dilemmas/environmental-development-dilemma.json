@@ -1,0 +1,241 @@
+{
+  "id": "environmental_development_dilemma_1742771042",
+  "title": "Environmental Protection vs. Economic Development",
+  "description": "As the mayor of a small economically depressed town, you must decide whether to approve a new mining operation. The mine would create 500 well-paying jobs in a community with 15% unemployment and revitalize the local economy. However, environmental assessments indicate it would likely cause significant damage to a nearby river ecosystem that contains several endangered species and provides clean water to downstream communities. The mining company has proposed some mitigation measures but acknowledges they cannot eliminate all environmental risks. Local opinion is sharply divided between those who prioritize economic opportunity and those who value environmental protection.",
+  "situation": {
+    "parameters": {
+      "num_people_total": { "value": 25000 },
+      "num_sustainable": { "value": 15000 },
+      "fatal_outcome": { "value": false },
+      "actor_position": { "value": "elected_official" },
+      "actor_intervention_type": { "value": "approval_decision" },
+      "actor_risk": { "value": "political" },
+      "resource_divisibility": { "value": "indivisible" },
+      "num_people_affected": { "value": 25000 },
+      "certainty_of_outcome": { "value": "moderate" },
+      "information_availability": { "value": "substantial" },
+      "time_pressure": { "value": "moderate" },
+      "alternatives": { "value": "limited" },
+      "relationship_to_beneficiary": { "value": "public_service" },
+      "property_value": { "value": 120000000 },
+      "ecosystem_value": { "value": "high" },
+      "life_at_stake": { "value": false },
+      "future_generations": { "value": true }
+    },
+    "constraints": {
+      "time_limited_decision": true,
+      "legality": "legal"
+    }
+  },
+  "parameters": {
+    "population_served_option_a": {
+      "value": 8000,
+      "description": "Number of people who would benefit economically from approval (jobs + indirect benefits)"
+    },
+    "benefit_per_person_option_a": {
+      "value": 9,
+      "description": "Average economic benefit to each person under Option A (1-10 scale)"
+    },
+    "population_served_option_b": {
+      "value": 25000,
+      "description": "Number of people who would benefit from environmental protection (Option B)"
+    },
+    "benefit_per_person_option_b": {
+      "value": 4,
+      "description": "Average environmental benefit to each person under Option B (1-10 scale)"
+    },
+    "urgency_option_a": {
+      "value": 8,
+      "description": "Urgency level of economic needs addressed by Option A (1-10 scale)"
+    },
+    "urgency_option_b": {
+      "value": 5,
+      "description": "Urgency level of environmental needs addressed by Option B (1-10 scale)"
+    },
+    "duty_alignment_option_a": {
+      "value": 7,
+      "description": "Alignment with mayoral duty to promote economic welfare for Option A (1-10 scale)"
+    },
+    "duty_alignment_option_b": {
+      "value": 6,
+      "description": "Alignment with mayoral duty to protect environment for Option B (1-10 scale)"
+    },
+    "vulnerable_population_protection": {
+      "value": 4,
+      "description": "Degree to which economically vulnerable populations are protected (1-10 scale)"
+    },
+    "existing_relationships_value": {
+      "value": 5,
+      "description": "Value placed on relationships with community stakeholders (1-10 scale)"
+    },
+    "future_generation_consideration": {
+      "value": 8,
+      "description": "Degree to which future generations' interests are considered (1-10 scale)"
+    },
+    "fairness_procedure": {
+      "value": 7,
+      "description": "Procedural fairness of the decision-making process (1-10 scale)"
+    },
+    "economic_sustainability": {
+      "value": 6,
+      "description": "Long-term economic sustainability of the community (1-10 scale)"
+    },
+    "environmental_sustainability": {
+      "value": 3,
+      "description": "Long-term environmental sustainability with mining operation (1-10 scale)"
+    },
+    "species_protection": {
+      "value": 2,
+      "description": "Degree to which endangered species are protected (1-10 scale)"
+    },
+    "water_quality_impact": {
+      "value": 3,
+      "description": "Projected water quality with mining operation (1-10 scale, 10 being pristine)"
+    },
+    "deportation_risk": {
+      "value": 0,
+      "description": "Risk of deportation for residents (not applicable in this scenario)"
+    },
+    "specialized_care_importance": {
+      "value": 5,
+      "description": "Importance of specialized environmental stewardship (1-10 scale)"
+    }
+  },
+  "frameworks": [
+    "utilitarian",
+    "justice",
+    "deontology",
+    "care_ethics",
+    "virtue_ethics"
+  ],
+  "stakeholders": [
+    {
+      "id": "unemployed_residents",
+      "name": "Unemployed Town Residents",
+      "concerns": "Jobs, economic opportunity, livelihood, dignity of work",
+      "influence": 0.7
+    },
+    {
+      "id": "environmental_advocates",
+      "name": "Environmental Advocates",
+      "concerns": "Ecosystem preservation, endangered species, water quality, precedent for future development",
+      "influence": 0.8
+    },
+    {
+      "id": "mining_company",
+      "name": "Mining Company",
+      "concerns": "Profit, regulatory compliance, corporate reputation, resource access",
+      "influence": 0.9
+    },
+    {
+      "id": "downstream_communities",
+      "name": "Downstream Communities",
+      "concerns": "Water quality, health impacts, recreational use of river",
+      "influence": 0.5
+    },
+    {
+      "id": "town_businesses",
+      "name": "Local Business Owners",
+      "concerns": "Economic growth, customer base, property values, tax burden",
+      "influence": 0.6
+    },
+    {
+      "id": "future_generations",
+      "name": "Future Generations",
+      "concerns": "Environmental heritage, resource availability, quality of life",
+      "influence": 0.3
+    }
+  ],
+  "contextual_factors": [
+    {
+      "factor": "decision_maker_role",
+      "value": "elected_official",
+      "relevance": "high",
+      "explanation": "The decision maker is an elected official with responsibilities to both present constituents and future generations."
+    },
+    {
+      "factor": "relationship_between_stakeholders",
+      "value": "competing_interests",
+      "relevance": "high",
+      "explanation": "Different stakeholder groups have directly competing interests and values."
+    },
+    {
+      "factor": "certainty_of_outcome",
+      "value": "moderate",
+      "relevance": "high",
+      "explanation": "Environmental impacts can be estimated but not predicted with absolute certainty."
+    },
+    {
+      "factor": "values_at_stake",
+      "value": "multiple_incommensurable",
+      "relevance": "high",
+      "explanation": "Economic prosperity and environmental preservation represent different types of value that cannot be directly compared."
+    },
+    {
+      "factor": "community_history",
+      "value": "economic_decline",
+      "relevance": "medium",
+      "explanation": "The town has experienced sustained economic decline for decades, affecting community identity and well-being."
+    },
+    {
+      "factor": "legal_framework",
+      "value": "mixed_obligations",
+      "relevance": "medium",
+      "explanation": "Legal frameworks provide both environmental protection requirements and economic development mandates."
+    },
+    {
+      "factor": "alternative_options",
+      "value": "limited",
+      "relevance": "medium",
+      "explanation": "Few other economic development options are currently available to the community."
+    },
+    {
+      "factor": "power_dynamics",
+      "value": "unbalanced",
+      "relevance": "medium",
+      "explanation": "There are significant power imbalances between stakeholders, with future generations having no direct voice."
+    }
+  ],
+  "possible_actions": [
+    {
+      "id": "approve_mining",
+      "name": "Approve Mining Operation",
+      "description": "Grant full approval for the mining operation with standard environmental requirements",
+      "outcomes": {
+        "economic": "Significant economic boost with ~500 direct jobs and 1000+ indirect jobs",
+        "environmental": "Substantial environmental damage with partial mitigation efforts",
+        "social": "Community division with economic benefits for some and environmental costs for all"
+      }
+    },
+    {
+      "id": "approve_with_conditions",
+      "name": "Approve with Enhanced Conditions",
+      "description": "Approve mining with significantly enhanced environmental protections and monitoring",
+      "outcomes": {
+        "economic": "Moderate economic boost with ~350 direct jobs and 700+ indirect jobs",
+        "environmental": "Moderate environmental damage with substantial mitigation efforts",
+        "social": "Partial community satisfaction with compromise between values"
+      }
+    },
+    {
+      "id": "reject_mining",
+      "name": "Reject Mining Operation",
+      "description": "Reject the mining proposal entirely to protect the ecosystem",
+      "outcomes": {
+        "economic": "Continued economic stagnation with potential for alternative development approaches",
+        "environmental": "Full environmental protection of current ecosystem",
+        "social": "Community division with environmental victory but continued economic hardship"
+      }
+    },
+    {
+      "id": "delay_decision",
+      "name": "Delay for Alternative Assessment",
+      "description": "Delay decision to commission study on alternative economic development options",
+      "outcomes": {
+        "economic": "Short-term economic stagnation with uncertain long-term prospects",
+        "environmental": "Temporary environmental protection with uncertain future",
+        "social": "Temporary reduction in community tension with continued uncertainty"
+      }
+    }
+  ]
+} 

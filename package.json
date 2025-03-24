@@ -8,14 +8,25 @@
     "test": "node process-dilemma-direct.js dilemmas/medical-triage.json",
     "start": "node process-dilemma-direct.js",
     "process:medical": "node process-dilemma-direct.js dilemmas/medical-triage.json",
-    "process:parent-child": "node process-dilemma-direct.js dilemmas/parent-child-medical-dilemma.json"
+    "process:medical:sequential": "node process-dilemma-direct.js dilemmas/medical-triage.json --sequential",
+    "process:parent-child": "node process-dilemma-direct.js dilemmas/parent-child-medical-dilemma.json",
+    "process:environmental": "node process-dilemma-direct.js dilemmas/environmental-development-dilemma.json",
+    "process:environmental:sequential": "node process-dilemma-direct.js dilemmas/environmental-development-dilemma.json --sequential",
+    "process:ai-governance": "node process-dilemma-direct.js dilemmas/ai-governance-dilemma.json",
+    "process:ai-governance:sequential": "node process-dilemma-direct.js dilemmas/ai-governance-dilemma.json --sequential",
+    "process:corporate": "node process-dilemma-direct.js dilemmas/corporate-responsibility-dilemma.json",
+    "process:corporate:sequential": "node process-dilemma-direct.js dilemmas/corporate-responsibility-dilemma.json --sequential"
   },
   "engines": {
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.69.0",
     "fs": "0.0.1-security",
+    "next-auth": "^4.24.11",
     "path": "0.12.7",
-    "url": "0.11.0"
+    "recharts": "^2.15.1",
+    "url": "0.11.0",
+    "zustand": "^5.0.3"
   }
 }

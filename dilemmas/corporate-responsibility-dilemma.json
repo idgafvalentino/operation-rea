@@ -1,0 +1,371 @@
+{
+  "id": "corporate_responsibility_dilemma",
+  "title": "Corporate Social Responsibility vs. Shareholder Returns",
+  "description": "As the CEO of a publicly traded manufacturing company, you must decide whether to implement costly environmental and labor standards that would significantly reduce short-term profits and shareholder returns but potentially create long-term value and social benefit. The decision comes as activist investors are pressuring for higher quarterly returns while environmental groups and labor advocates are calling for substantial reforms.",
+  "situation": {
+    "parameters": {
+      "num_people_total": { "value": 250000 },
+      "num_sustainable": { "value": 250000 },
+      "fatal_outcome": { "value": false },
+      "actor_position": { "value": "authority" },
+      "actor_intervention_type": { "value": "policy_decision" },
+      "actor_risk": { "value": "professional" },
+      "resource_divisibility": { "value": "divisible" },
+      "num_people_affected": { "value": 250000 },
+      "certainty_of_outcome": { "value": "low" },
+      "information_availability": { "value": "partial" },
+      "time_pressure": { "value": "moderate" },
+      "alternatives": { "value": "multiple" },
+      "relationship_to_beneficiary": { "value": "commercial" },
+      "property_value": { "value": 5000000000 },
+      "life_at_stake": { "value": false }
+    },
+    "constraints": {
+      "time_limited_decision": true,
+      "legality": "legal"
+    }
+  },
+  "parameters": {
+    "number_of_people_affected": {
+      "value": 250000,
+      "description": "Total number of employees, community members, and others directly affected"
+    },
+    "annual_revenue": {
+      "value": 2000000000,
+      "description": "Annual company revenue in dollars"
+    },
+    "implementation_cost": {
+      "value": 500000000,
+      "description": "Cost to implement environmental and labor standards in dollars"
+    },
+    "short_term_profit_impact_percentage": {
+      "value": 30,
+      "description": "Percentage reduction in short-term profits from implementing standards"
+    },
+    "potential_long_term_value_increase": {
+      "value": 45,
+      "description": "Estimated percentage increase in company value over 10 years"
+    },
+    "employee_satisfaction_current": {
+      "value": 5,
+      "description": "Current employee satisfaction rating (1-10 scale)"
+    },
+    "employee_satisfaction_projected": {
+      "value": 8,
+      "description": "Projected employee satisfaction with new standards (1-10 scale)"
+    },
+    "environmental_impact_current": {
+      "value": 8,
+      "description": "Current negative environmental impact rating (1-10 scale)"
+    },
+    "environmental_impact_projected": {
+      "value": 3,
+      "description": "Projected environmental impact with new standards (1-10 scale)"
+    },
+    "brand_reputation_impact": {
+      "value": 7,
+      "description": "Potential positive impact on brand reputation (1-10 scale)"
+    },
+    "regulatory_risk_reduction": {
+      "value": 8,
+      "description": "Reduction in future regulatory risk (1-10 scale)"
+    },
+    "investor_relations_impact": {
+      "value": -6,
+      "description": "Short-term impact on investor relations (-10 to 10 scale)"
+    },
+    "shareholder_short_term_loss": {
+      "value": 25,
+      "description": "Estimated percentage drop in share price in short term"
+    },
+    "community_health_improvement": {
+      "value": 6,
+      "description": "Projected improvement in community health metrics (1-10 scale)"
+    },
+    "population_served_option_a": {
+      "value": 250000,
+      "description": "Population potentially benefiting from implementing standards"
+    },
+    "population_served_option_b": {
+      "value": 10000,
+      "description": "Population potentially benefiting from maintaining status quo"
+    },
+    "population_served_option_c": {
+      "value": 175000,
+      "description": "Population potentially benefiting from gradual implementation"
+    },
+    "benefit_per_person_option_a": {
+      "value": 7,
+      "description": "Average benefit per person from implementing standards (1-10 scale)"
+    },
+    "benefit_per_person_option_b": {
+      "value": 9,
+      "description": "Average benefit per person from maintaining status quo (1-10 scale)"
+    },
+    "benefit_per_person_option_c": {
+      "value": 6,
+      "description": "Average benefit per person from gradual implementation (1-10 scale)"
+    },
+    "benefit_option_a": {
+      "value": 75,
+      "description": "Total benefit rating for implementing standards (1-100 scale)"
+    },
+    "harm_option_a": {
+      "value": 60,
+      "description": "Total harm rating for implementing standards (1-100 scale)"
+    },
+    "benefit_option_b": {
+      "value": 50,
+      "description": "Total benefit rating for maintaining status quo (1-100 scale)"
+    },
+    "harm_option_b": {
+      "value": 40,
+      "description": "Total harm rating for maintaining status quo (1-100 scale)"
+    },
+    "benefit_option_c": {
+      "value": 65,
+      "description": "Total benefit rating for gradual implementation (1-100 scale)"
+    },
+    "harm_option_c": {
+      "value": 45,
+      "description": "Total harm rating for gradual implementation (1-100 scale)"
+    },
+    "urgency_option_a": {
+      "value": 7,
+      "description": "Urgency level for implementing standards (1-10 scale)"
+    },
+    "urgency_option_b": {
+      "value": 5,
+      "description": "Urgency level for maintaining status quo (1-10 scale)"
+    },
+    "urgency_option_c": {
+      "value": 6,
+      "description": "Urgency level for gradual implementation (1-10 scale)"
+    },
+    "specialized_care_importance": {
+      "value": 4,
+      "description": "Importance of specialized business ethics (1-10 scale)"
+    },
+    "deportation_risk": {
+      "value": 0,
+      "description": "Risk of deportation (not applicable in this scenario)"
+    }
+  },
+  "frameworks": [
+    "utilitarian",
+    "justice",
+    "deontology",
+    "care_ethics",
+    "virtue_ethics"
+  ],
+  "stakeholders": [
+    {
+      "id": "shareholders",
+      "name": "Company Shareholders",
+      "concerns": "Financial returns, company valuation, investment protection",
+      "influence": 0.9,
+      "number": 10000,
+      "impact": {
+        "approve_option_a": -8,
+        "approve_option_b": 9,
+        "approve_option_c": 4
+      },
+      "vulnerability": 0.3,
+      "power_level": 0.9
+    },
+    {
+      "id": "employees",
+      "name": "Company Employees",
+      "concerns": "Job security, working conditions, compensation, ethical workplace",
+      "influence": 0.5,
+      "number": 50000,
+      "impact": {
+        "approve_option_a": 8,
+        "approve_option_b": -6,
+        "approve_option_c": 5
+      },
+      "vulnerability": 0.7,
+      "power_level": 0.4
+    },
+    {
+      "id": "local_communities",
+      "name": "Local Communities",
+      "concerns": "Environmental impacts, economic benefits, health effects",
+      "influence": 0.3,
+      "number": 180000,
+      "impact": {
+        "approve_option_a": 9,
+        "approve_option_b": -7,
+        "approve_option_c": 6
+      },
+      "vulnerability": 0.8,
+      "power_level": 0.2
+    },
+    {
+      "id": "board_members",
+      "name": "Board of Directors",
+      "concerns": "Fiduciary duty, company reputation, legal compliance",
+      "influence": 0.8,
+      "number": 12,
+      "impact": {
+        "approve_option_a": -5,
+        "approve_option_b": 7,
+        "approve_option_c": 8
+      },
+      "vulnerability": 0.2,
+      "power_level": 0.9
+    },
+    {
+      "id": "customers",
+      "name": "Customers",
+      "concerns": "Product quality, pricing, ethical sourcing, brand values",
+      "influence": 0.7,
+      "number": 5000000,
+      "impact": {
+        "approve_option_a": 6,
+        "approve_option_b": -4,
+        "approve_option_c": 5
+      },
+      "vulnerability": 0.4,
+      "power_level": 0.6
+    },
+    {
+      "id": "environmental_groups",
+      "name": "Environmental Advocacy Groups",
+      "concerns": "Ecological impacts, sustainability practices, corporate accountability",
+      "influence": 0.5,
+      "number": 25,
+      "impact": {
+        "approve_option_a": 10,
+        "approve_option_b": -9,
+        "approve_option_c": 5
+      },
+      "vulnerability": 0.3,
+      "power_level": 0.5
+    }
+  ],
+  "contextual_factors": [
+    {
+      "factor": "decision_maker_role",
+      "value": "ceo",
+      "relevance": "high",
+      "explanation": "The decision maker is the CEO with ultimate executive authority but accountable to the board."
+    },
+    {
+      "factor": "stakeholder_power_dynamics",
+      "value": "unequal",
+      "relevance": "high",
+      "explanation": "Significant power imbalances exist between shareholders, board members, and other stakeholders."
+    },
+    {
+      "factor": "market_competition",
+      "value": "intense",
+      "relevance": "high",
+      "explanation": "The company operates in a highly competitive market where cost advantages matter."
+    },
+    {
+      "factor": "industry_norms",
+      "value": "transitioning",
+      "relevance": "medium",
+      "explanation": "The industry is gradually moving toward more sustainable practices but at an uneven pace."
+    }
+  ],
+  "possible_actions": [
+    {
+      "id": "approve_option_a",
+      "action": "implement_full_standards",
+      "description": "Implement comprehensive environmental and labor standards immediately across all operations, accepting the significant short-term financial impact.",
+      "predicted_consequences": "Substantial reduction in short-term profits and shareholder value. Improved employee conditions and environmental outcomes. Potential long-term brand enhancement and risk reduction.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "Successful implementation with positive long-term results",
+            "probability": 0.6,
+            "utility": {
+              "financial_outcome": -150000000,
+              "environmental_benefit": 85,
+              "social_benefit": 80,
+              "long_term_value": 900000000,
+              "total": 750000000
+            }
+          },
+          {
+            "description": "Implementation struggles with higher than expected costs",
+            "probability": 0.4,
+            "utility": {
+              "financial_outcome": -750000000,
+              "environmental_benefit": 70,
+              "social_benefit": 65,
+              "long_term_value": 400000000,
+              "total": -350000000
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "approve_option_b",
+      "action": "maintain_status_quo",
+      "description": "Maintain current practices and focus on maximizing short-term shareholder returns through cost control and efficiency measures.",
+      "predicted_consequences": "Preserved short-term profits and shareholder value. Continued environmental impacts and employee dissatisfaction. Potential brand damage and increased regulatory risk long-term.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "Successful short-term financial performance",
+            "probability": 0.7,
+            "utility": {
+              "financial_outcome": 300000000,
+              "environmental_impact": -70,
+              "social_impact": -75,
+              "long_term_risk": -400000000,
+              "total": -100000000
+            }
+          },
+          {
+            "description": "Reputational damage affecting financial performance",
+            "probability": 0.3,
+            "utility": {
+              "financial_outcome": 150000000,
+              "environmental_impact": -80,
+              "social_impact": -85,
+              "long_term_risk": -800000000,
+              "total": -650000000
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "approve_option_c",
+      "action": "phased_implementation",
+      "description": "Implement environmental and labor standards gradually over a five-year period, balancing short-term financial impacts with long-term improvements.",
+      "predicted_consequences": "Moderate reduction in short-term profits. Gradual improvement in environmental and labor conditions. Balanced approach to stakeholder interests.",
+      "quantitative_data": {
+        "outcomes": [
+          {
+            "description": "Successful balanced approach with stakeholder buy-in",
+            "probability": 0.5,
+            "utility": {
+              "financial_outcome": -50000000,
+              "environmental_benefit": 60,
+              "social_benefit": 65,
+              "long_term_value": 600000000,
+              "total": 550000000
+            }
+          },
+          {
+            "description": "Implementation delays and mixed stakeholder reception",
+            "probability": 0.5,
+            "utility": {
+              "financial_outcome": -100000000,
+              "environmental_benefit": 40,
+              "social_benefit": 45,
+              "long_term_value": 300000000,
+              "total": 200000000
+            }
+          }
+        ]
+      }
+    }
+  ]
+} 

@@ -43,24 +43,42 @@ node process-dilemma-direct.js dilemmas/medical-triage.json --no-color
 ### Dilemmas
 
 - `dilemmas/`: Directory containing dilemma definitions in JSON format
+  - `ai-governance-dilemma.json`: AI ethics and governance policy scenario
+  - `corporate-responsibility.json`: Corporate social responsibility decision scenario
+  - `environmental-development.json`: Environmental sustainability versus development scenario
   - `medical-triage.json`: Medical emergency triage scenario
   - `parent-child-medical-dilemma.json`: Scenario about child medical treatment vs religious beliefs
 
 ### Source Code (`src/`)
 
-#### Testing Framework
+#### Core Components
 
-- `src/testing/`
-  - `reaTestAdapter.js`: Core REA pipeline implementation, connects all components
-  - `reaTestFramework.js`: Validation framework for dilemmas and results
-  - `dilemmaTemplates.js`: Templates for creating standardized dilemmas
+- `src/core/`
+  - `rea.js`: Central module that implements the core REA system functionality including processing, conflict detection, and resolution
+
+#### Framework Components
+
+- `src/frameworks/`
+  - `templates.js`: Templates for different ethical frameworks with standardized structures for justifications
 
 #### Analysis Components
 
 - `src/analysis/`
+  - `conflictAnalysis.js`: Comprehensive module for analyzing ethical conflicts, calculating framework distances, and identifying compromise areas
+  - `frameworkAnalysis.js`: Analysis of dilemmas through different ethical frameworks
+  - `multiFrameworkAnalysis.js`: Multi-framework comparative analysis
   - `causalDetection.js`: Identifies causal relationships in dilemma text
   - `causalGraph.js`: Implements graph representation of causal relationships
   - `consequenceSchema.js`: Defines schemas for consequence analysis
+  - `sequential/`
+    - `sequentialAnalysis.js`: Step-by-step sequential analysis implementation
+
+#### Testing Framework
+
+- `src/testing/`
+  - `reaTestAdapter.js`: Adapter connecting testing framework to the core REA implementation
+  - `reaTestFramework.js`: Validation framework for dilemmas and results
+  - `dilemmaTemplates.js`: Templates for creating standardized dilemmas
 
 #### Resolution Components
 
@@ -100,6 +118,14 @@ node process-dilemma-direct.js dilemmas/medical-triage.json --no-color
 ## Recent Improvements
 
 The codebase has recently been enhanced with several key improvements:
+
+### Modular Architecture Refactoring
+
+- **Framework Templates Module**: Extracted framework template functions into a dedicated module for better reusability
+- **Conflict Analysis Module**: Implemented comprehensive conflict analysis with specialized functions for different aspects of conflict resolution
+- **Core REA Module**: Restructured core functionality with clear boundaries and responsibilities
+- **Reduced Duplication**: Eliminated redundant code by properly modularizing functionality
+- **Improved Maintainability**: Reduced file sizes, cleaner imports, and better organized code structure
 
 ### Enhanced Conflict Resolution Strategies
 
