@@ -5,6 +5,7 @@ Clean implementation of the Responsible Ethical Automation (REA) system for anal
 ## Prerequisites
 
 - Node.js v16.0.0 or higher
+- Git (for version control)
 
 ## Installation
 
@@ -13,11 +14,18 @@ Clean implementation of the Responsible Ethical Automation (REA) system for anal
 git clone https://github.com/your-username/operation-rea.git
 cd operation-rea
 
-# Install dependencies
+# Install dependencies for backend
 npm install
 ```
 
-## Running the system
+## Project Components
+
+This project consists of two main components:
+
+1. **REA Backend**: Core REA system for ethical analysis and conflict resolution
+2. **Next.js Frontend**: Web interface for interacting with the REA system
+
+## Running the Backend System
 
 ```bash
 # Process a dilemma file
@@ -34,9 +42,51 @@ node process-dilemma-direct.js dilemmas/parent-child-medical-dilemma.json --form
 node process-dilemma-direct.js dilemmas/medical-triage.json --no-color
 ```
 
+## Running the Frontend Application
+
+```bash
+# Navigate to the frontend directory
+cd operation-rea-frontend
+
+# Install dependencies
+npm install
+
+# Set up environment variables 
+# Create a .env.local file with GitHub OAuth credentials
+# (See Authentication Setup section below)
+
+# Start the development server
+npm run dev
+```
+
+Visit `http://localhost:3000` to access the web interface.
+
+## Authentication Setup
+
+The frontend uses NextAuth.js with GitHub provider for authentication. To set it up:
+
+1. Create a GitHub OAuth app at `https://github.com/settings/developers`
+2. Set the Authorization callback URL to `http://localhost:3000/api/auth/callback/github`
+3. Create a `.env.local` file in the `operation-rea-frontend` directory with:
+
+```
+GITHUB_ID=your_github_client_id
+GITHUB_SECRET=your_github_client_secret
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_random_secret_key
+```
+
 ## Project Structure
 
-### Root Files
+### Frontend (`operation-rea-frontend/`)
+
+- `src/app/`: Next.js application routes and API endpoints
+- `src/components/`: React components for the frontend interface
+- `src/hooks/`: Custom React hooks for data fetching
+- `src/lib/`: Utility functions and shared libraries
+- `public/`: Static assets
+
+### Backend Root Files
 
 - `process-dilemma-direct.js`: Main entry point that processes dilemmas through the full REA pipeline
 
@@ -115,9 +165,32 @@ node process-dilemma-direct.js dilemmas/medical-triage.json --no-color
 5. **Conflict Resolution**: Apply resolution strategies to resolve conflicts
 6. **Recommendation**: Generate final recommendation with confidence level
 
+## Frontend Features
+
+The Next.js frontend provides a modern, user-friendly interface for working with the REA system:
+
+1. **Authentication**: Sign in with GitHub using NextAuth.js
+2. **Dilemma Management**: Browse, create, and edit ethical dilemmas
+3. **Analysis Dashboard**: View real-time analysis results with visual representations
+4. **Interactive Interface**: Intuitive interface for exploring ethical frameworks and their recommendations
+
+## Frontend-Backend Integration
+
+The frontend integrates with the REA backend through:
+
+1. **Shared Code**: Core REA modules are imported directly in the frontend for consistent processing
+2. **API Endpoints**: REST API endpoints for analysis and dilemma management
+3. **Authentication Flow**: User authentication to secure sensitive operations
+
 ## Recent Improvements
 
 The codebase has recently been enhanced with several key improvements:
+
+### Next.js Frontend Addition
+
+- **Modern UI**: Clean, responsive interface built with Next.js 14 and Tailwind CSS
+- **User Authentication**: Secure authentication flow using NextAuth.js with GitHub provider
+- **Seamless Integration**: Direct integration with the REA backend system
 
 ### Modular Architecture Refactoring
 
@@ -159,4 +232,24 @@ Create a new JSON file in the `dilemmas/` directory following the structure of e
 - Possible actions
 - Ethical dimensions
 
-Run the dilemma through the system using the command shown in "Running the system".
+You can add new dilemmas either:
+- Directly through the frontend interface using the "Create Dilemma" form
+- By adding JSON files to the `dilemmas/` directory in the project
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+Built with ❤️ using Next.js, Node.js, and ethical principles
